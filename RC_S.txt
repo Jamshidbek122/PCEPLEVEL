@@ -1,0 +1,219 @@
+                       I QISM — OPERATORLAR (1-15)
+--------------------------------------------------------------------------------
+
+
+1-SAVOL
+   print(2 ** 3 ** 2 - 10)
+   a) 502     b) 54      c) 246     d) 22
+
+
+2-SAVOL
+   print(-2 ** 4)
+   a) 16      b) -16     c) -8      d) 8
+
+
+3-SAVOL
+   print((-2) ** 4)
+   a) -16     b) 16      c) 8       d) -8
+
+
+4-SAVOL
+   print(17 % 5 ** 2)
+   a) 17      b) 2       c) 7       d) 0
+
+
+5-SAVOL
+   print(2 + 3 * 4 ** 2 // 5)
+   a) 11      b) 16      c) 9       d) 38
+
+
+6-SAVOL
+   print(5 + 4 % 3 * 2)
+   a) 7       b) 8       c) 18      d) 6
+
+
+7-SAVOL
+   print(2 ** 2 ** 2 ** 1)
+   a) 16      b) 64      c) 256     d) 8
+
+
+8-SAVOL
+   print(10 - 2 ** 3 % 4)
+   a) 10      b) 2       c) 8       d) 6
+
+
+9-SAVOL
+   print(7 // 2 ** 2)
+   a) 1       b) 3       c) 2       d) 0
+
+
+10-SAVOL
+   print(1 + 8 // 3 % 2 * 4)
+   a) 1       b) 5       c) 9       d) 13
+
+
+11-SAVOL
+   x = 2
+   x **= 3
+   print(x)
+   a) 8       b) 6       c) 9       d) 16
+
+
+12-SAVOL
+   y = 17
+   y %= 5
+   y *= 2
+   print(y)
+   a) 4       b) 14      c) 24      d) 2
+
+
+13-SAVOL
+   print(-10 // 3)
+   a) -3      b) -4      c) 3       d) -3.33
+
+
+14-SAVOL
+   print(-10 % 3)
+   a) -1      b) 2       c) 1       d) -2
+
+
+15-SAVOL
+   print(True + True + False)
+   a) 2       b) True    c) 1       d) Xato
+
+--------------------------------------------------------------------------------
+                       II QISM — REKURSIYA (16-30)
+--------------------------------------------------------------------------------
+
+16-SAVOL
+   def f(n):
+       if n <= 0:
+           return 0
+       return n + f(n - 2)
+   print(f(6))
+   a) 12      b) 21      c) 9       d) 6
+
+17-SAVOL
+   def f(n):
+       if n < 2:
+           return n
+       return f(n - 1) + f(n - 2)
+   print(f(5))
+   a) 5       b) 8       c) 3       d) 13
+
+18-SAVOL
+   def f(n):
+       if n == 0:
+           return
+       print(n, end=' ')
+       f(n - 1)
+       print(n, end=' ')
+   f(3)
+   a) 3 2 1 1 2 3    b) 1 2 3 3 2 1    c) 3 2 1    d) 1 2 3
+
+
+19-SAVOL
+   def f(s):
+       if len(s) == 0:
+           return ''
+       return f(s[1:]) + s[0]
+   print(f('abc'))
+   a) abc     b) cba     c) aaa     d) bca
+
+
+20-SAVOL
+   def f(a, b):
+       if a == 0:
+           return b
+       return f(a - 1, b + 1)
+   print(f(3, 4))
+   a) 7       b) 12      c) 1       d) 3
+
+
+21-SAVOL
+   def f(n, acc=1):
+       if n == 0:
+           return acc
+       return f(n - 1, acc * n)
+   print(f(4))
+   a) 24      b) 10      c) 4       d) 1
+
+
+22-SAVOL
+   def f(n):
+       print(n, end=' ')
+       if n > 1:
+           f(n // 2)
+   f(8)
+   a) 8 4 2 1    b) 8 4 2 1 0    c) 1 2 4 8    d) 8 7 6 5
+
+
+23-SAVOL
+   def f(n):
+       if n == 0:
+           return 0
+       return f(n - 1)
+   print(f(3))
+   a) 0       b) 3       c) 6       d) None
+
+
+24-SAVOL
+   def f(lst):
+       if not lst:
+           return 0
+       return lst[0] + f(lst[1:])
+   print(f([1, 2, 3, 4]))
+   a) 10      b) 4       c) 24      d) 1
+
+
+25-SAVOL
+   def f(n):
+       if n > 5:
+           return n
+       return f(n + 2)
+   print(f(1))
+   a) 7       b) 5       c) 6       d) 9
+
+
+26-SAVOL
+   def f(n):
+       if n == 0:
+           return
+       f(n - 1)
+       print(n, end=' ')
+   f(4)
+   a) 1 2 3 4    b) 4 3 2 1    c) 0 1 2 3 4    d) 1 2 3
+
+
+27-SAVOL
+   def f(x, y):
+       if y == 0:
+           return 1
+       return x * f(x, y - 1)
+   print(f(2, 3))
+   a) 8       b) 6       c) 9       d) 5
+
+
+28-SAVOL
+   def f(n):
+       return f(n - 1)
+   print(f(5))
+   a) 0       b) 5       c) RecursionError    d) None
+
+
+29-SAVOL
+   def f(n):
+       if n <= 0:
+           return 0
+       return 1 + f(n - 1)
+   print(f(5))
+   a) 5       b) 15      c) 0       d) 6
+
+
+30-SAVOL
+   def f(n):
+       if n == 1:
+           return 1
+       return n + f(n - 1)
+   print(f(5))
+   a) 15      b) 14      c) 10      d) 120
