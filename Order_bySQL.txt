@@ -1,0 +1,40 @@
+
+1. "course" jadvalini yarating, unda id ustuni PRIMARY KEY bo'lsin. SQL kodini yozing.
+2. "talaba" jadvalini yarating, unda id ustuni PRIMARY KEY bo'lsin va course_id ustuni course jadvalining id ustuniga FOREIGN KEY orqali bog'langan bo'lsin.
+3. talaba jadvaliga yangi ustun sifatida FOREIGN KEY qo'shish kerak bo'lsa (jadval allaqachon yaratilgan bo'lsa), buning uchun ALTER TABLE yordamida SQL kodini yozing.
+4. course jadvalidan biror kursni o'chirishga harakat qilinganda, agar shu kursga bog'langan talabalar bo'lsa, nima uchun xatolik chiqishi mumkin? Tushuntiring.
+5. course_id ustunida ON DELETE CASCADE bo'lishi uchun FOREIGN KEY ni qanday yozish kerak? SQL kodini yozing va bu nima ishni bajarishini tushuntiring.
+6. Agar bitta kurs o'chirilganda unga tegishli barcha talabalarning course_id ustuni NULL bo'lishini xohlasangiz, buni qaysi FOREIGN KEY sozlamasi orqali amalga oshirasiz?
+7. talaba jadvalidagi course_id ustuni nima uchun course jadvalidagi id ustuniga mos (bir xil tur va formatda) bo'lishi kerak?
+8. course_id FOREIGN KEY orqali bog'lanmagan (ya'ni course jadvalida mavjud bo'lmagan) qiymatni talaba jadvaliga qo'shishga harakat qilinsa, nima bo'ladi?
+
+ORDER BY va DESC bo'yicha masalalar
+
+9. Barcha talabalarni fullname bo'yicha alifbo tartibida (A dan Z gacha) chiqaradigan SQL so'rovini yozing.
+10. Barcha talabalarni age bo'yicha kattadan kichikka (DESC) tartiblab chiqaring.
+11. Barcha kurslarni price bo'yicha arzondan qimmatga tartiblab chiqaring.
+12. Barcha kurslarni price bo'yicha eng qimmatidan eng arzoniga qarab chiqaradigan so'rov yozing.
+13. talaba jadvalidan barcha yozuvlarni avval course_id bo'yicha o'sish tartibida, so'ngra shu course_id ichida fullname bo'yicha alifbo tartibida chiqaring (ikkita ustun bo'yicha tartiblash).
+14. Barcha talabalarni age bo'yicha DESC va fullname bo'yicha ASC qilib tartiblang (bittasi kamayish, ikkinchisi o'sish tartibida).
+15. course jadvalidagi kurslarni duration bo'yicha eng uzunidan eng qisqasiga qarab chiqaring.
+
+LIMIT va OFFSET bo'yicha masalalar
+
+16. Barcha talabalar ichidan yoshi (age) bo'yicha eng katta 5 ta talabani chiqaradigan SQL so'rovini yozing.
+17. course jadvalidan narxi (price) eng qimmat bo'lgan 3 ta kursni chiqaring.
+18. talaba jadvalidan birinchi 10 ta yozuvni (id bo'yicha o'sish tartibida) chiqaradigan so'rov yozing.
+19. talaba jadvalidan 11-yozuvdan boshlab keyingi 10 ta yozuvni chiqaradigan SQL so'rovini yozing (LIMIT va OFFSET yordamida).
+20. Saytda "sahifalash" (pagination) qilmoqchisiz: har bir sahifada 5 tadan talaba chiqishi kerak. 3-sahifani (ya'ni 11-15 talabalarni) chiqaradigan so'rovni yozing.
+21. course jadvalidan eng arzon 2 ta kursni chiqaradigan so'rovni yozing.
+
+Kombinatsiyalashgan (aralash) masalalar
+
+22. Barcha talabalarni age bo'yicha DESC tartiblab, ulardan faqat eng katta yoshdagi 3 talabani chiqaradigan so'rovni yozing (ORDER BY + LIMIT).
+23. course jadvalidagi kurslarni price bo'yicha DESC tartiblab, 2-va 3-o'rindagi (eng qimmat 2 tadan keyingi) kursni chiqaradigan so'rovni yozing (ORDER BY + LIMIT + OFFSET).
+24. Muayyan bir course_id ga tegishli barcha talabalarni fullname bo'yicha alifbo tartibida chiqaradigan so'rov yozing (WHERE + ORDER BY).
+25. course_id qiymati 3 bo'lgan talabalar ichidan age bo'yicha DESC tartiblab, eng katta yoshdagi 2 talabani chiqaradigan so'rovni yozing (WHERE + ORDER BY + LIMIT).
+26. talaba jadvalidagi barcha ma'lumotlarni id bo'yicha DESC tartiblab, faqat oxirgi qo'shilgan 5 ta talabani chiqaradigan so'rovni yozing.
+27. course jadvalidan price 500000 dan katta bo'lgan kurslarni duration bo'yicha o'sish tartibida chiqaradigan so'rovni yozing (WHERE + ORDER BY).
+28. talaba jadvalidan age 18 dan katta bo'lgan talabalarni fullname bo'yicha DESC tartiblab, faqat birinchi 4 tasini chiqaradigan so'rovni yozing (WHERE + ORDER BY + LIMIT).
+29. course jadvalidagi barcha kurslarni id bo'yicha DESC tartiblab, 2-ta o'tkazib yuborib, keyingi 3 tasini chiqaradigan so'rovni yozing (ORDER BY + LIMIT + OFFSET).
+30. talaba jadvaliga yangi bir talaba (fullname, age, course_id qiymatlari bilan) qo'shadigan INSERT so'rovini yozing, so'ng shu jadvaldan id bo'yicha DESC tartiblab birinchi yozuvni chiqaradigan SELECT so'rovini yozing (qo'shilgan yozuv to'g'riligini tekshirish uchun).
