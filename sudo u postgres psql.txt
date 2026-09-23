@@ -1,0 +1,253 @@
+
+sudo -u postgres psql;
+[sudo] password for jamshidbek: 
+psql (16.15 (Ubuntu 16.15-0ubuntu0.24.04.1))
+Type "help" for help.
+
+postgres=# select * from talaba;
+ id | fullname  | age 
+----+-----------+-----
+ 11 | Mirshakar |  14
+ 12 | Nosir     |  15
+ 13 | Abbos     |  13
+(3 rows)
+
+postgres=# select * from course;
+ id |  subject   |  cost  | talaba_id 
+----+------------+--------+-----------
+  1 | Matematika | 350000 |        11
+(1 row)
+
+postgres=# alter table course rename column subject to fan;
+ALTER TABLE
+postgres=# select * from course;
+ id |    fan     |  cost  | talaba_id 
+----+------------+--------+-----------
+  1 | Matematika | 350000 |        11
+(1 row)
+
+postgres=# alter table course add column price int;
+ALTER TABLE
+postgres=# alter table course add column price;
+ERROR:  syntax error at or near ";"
+LINE 1: alter table course add column price;
+                                           ^
+postgres=# alter table course add column price int;
+ERROR:  column "price" of relation "course" already exists
+postgres=# select * from course;
+ id |    fan     |  cost  | talaba_id | price 
+----+------------+--------+-----------+-------
+  1 | Matematika | 350000 |        11 |      
+(1 row)
+
+postgres=# select * from course;
+ id |    fan     |  cost  | talaba_id | price 
+----+------------+--------+-----------+-------
+  1 | Matematika | 350000 |        11 |      
+(1 row)
+
+postgres=# drop table course;
+DROP TABLE
+postgres=# create table course(
+postgres(# id int primary key,
+postgres(# subject varchar(100),
+postgres(# cost int,
+postgres(# talaba_id int,
+postgres(# foreign key (talaba_id)
+postgres(# references talaba(id)
+postgres(# );
+CREATE TABLE
+postgres=# insert into course(id,subject,cost,talaba_id)
+postgres-# values
+postgres-# (1,'IT',500000,13),
+postgres-# (2,'Ingliz tili', 400000,12);
+INSERT 0 2
+postgres=# select * from course;
+ id |   subject   |  cost  | talaba_id 
+----+-------------+--------+-----------
+  1 | IT          | 500000 |        13
+  2 | Ingliz tili | 400000 |        12
+(2 rows)
+
+postgres=# drop table talaba;
+ERROR:  cannot drop table talaba because other objects depend on it
+DETAIL:  constraint course_talaba_id_fkey on table course depends on table talaba
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+postgres=# drop table course;
+DROP TABLE
+postgres=# insert into course(id,subject,cost,talaba_id)
+values
+(1,'IT',500000,13),
+(2,'Ingliz tili', 400000,12);
+ERROR:  relation "course" does not exist
+LINE 1: insert into course(id,subject,cost,talaba_id)
+                    ^
+postgres=# create table course(
+id int primary key,
+subject varchar(100),
+cost int,                    
+talaba_id int,
+foreign key (talaba_id)
+references talaba(id)
+);
+CREATE TABLE
+postgres=# insert into course(id,subject,cost,talaba_id)
+values
+(1,'IT',500000,13),
+(2,'Ingliz tili', 400000,12);
+INSERT 0 2
+postgres=# select * from course;
+ id |   subject   |  cost  | talaba_id 
+----+-------------+--------+-----------
+  1 | IT          | 500000 |        13
+  2 | Ingliz tili | 400000 |        12
+(2 rows)
+
+postgres=# select * from talaba;
+ id | fullname  | age 
+----+-----------+-----
+ 11 | Mirshakar |  14
+ 12 | Nosir     |  15
+ 13 | Abbos     |  13
+(3 rows)
+
+postgres=# drop table talaba;
+ERROR:  cannot drop table talaba because other objects depend on it
+DETAIL:  constraint course_talaba_id_fkey on table course depends on table talaba
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+postgres=# drop table course;
+DROP TABLE
+postgres=# drop table talaba;
+DROP TABLE
+postgres=# create table talaba(
+postgres(# id int primary key,
+postgres(# name varchar(100),
+postgres(# age int);
+CREATE TABLE
+postgres=# select * from talaba;
+ id | name | age 
+----+------+-----
+(0 rows)
+
+postgres=# insert into talaba(id,age,name)
+postgres-# values
+postgres-# (1,12,'Alibek'),
+postgres-# (2,15,'Abbos'),
+postgres-# (3,14,'Karim');
+INSERT 0 3
+postgres=# select * from talaba;
+ id |  name  | age 
+----+--------+-----
+  1 | Alibek |  12
+  2 | Abbos  |  15
+  3 | Karim  |  14
+(3 rows)
+
+postgres=# create table course(
+postgres(# id int primary key,
+postgres(# subject varchar(100),
+postgres(# cost int,
+postgres(# talaba_id int,
+postgres(# foreign key (talaba_id) references talaba(id);
+postgres(# );
+ERROR:  syntax error at or near ";"
+LINE 6: foreign key (talaba_id) references talaba(id);
+                                                     ^
+postgres=# create table course(
+id int primary key,
+subject varchar(100),
+cost int,
+talaba_id int,
+foreign key (talaba_id) references talaba(id) on delete cascade 
+);
+CREATE TABLE
+postgres=# select * from talaba;
+ id |  name  | age 
+----+--------+-----
+  1 | Alibek |  12
+  2 | Abbos  |  15
+  3 | Karim  |  14
+(3 rows)
+
+postgres=# select * from course;
+ id | subject | cost | talaba_id 
+----+---------+------+-----------
+(0 rows)
+
+postgres=# insert into course(id,subject,cost)
+postgres-# values
+postgres-# (1,'IT',500000)
+postgres-# (2,'Math',40000);
+ERROR:  syntax error at or near "("
+LINE 4: (2,'Math',40000);
+        ^
+postgres=# insert into course(id,subject,cost)
+values
+(1,'IT',500000)
+(2,'Math',400000);
+ERROR:  syntax error at or near "("
+LINE 4: (2,'Math',400000);
+        ^
+postgres=# insert into course(id,subject,cost)
+values
+(1,'IT',500000),
+(2,'Math',400000);
+INSERT 0 2
+postgres=# select * from course;
+ id | subject |  cost  | talaba_id 
+----+---------+--------+-----------
+  1 | IT      | 500000 |          
+  2 | Math    | 400000 |          
+(2 rows)
+
+postgres=# update course set talaba_id = 1,where id = 1;
+ERROR:  syntax error at or near "where"
+LINE 1: update course set talaba_id = 1,where id = 1;
+                                        ^
+postgres=# insert into course(talab_id)
+values
+(1),
+(2);
+ERROR:  column "talab_id" of relation "course" does not exist
+LINE 1: insert into course(talab_id)
+                           ^
+postgres=# update course talaba_id = 1 where id = 1;
+ERROR:  syntax error at or near "="
+LINE 1: update course talaba_id = 1 where id = 1;
+                                ^
+postgres=# update course set talaba_id = 1 where id = 1;
+UPDATE 1
+postgres=# select * from course;
+ id | subject |  cost  | talaba_id 
+----+---------+--------+-----------
+  2 | Math    | 400000 |          
+  1 | IT      | 500000 |         1
+(2 rows)
+
+postgres=# update course set talaba_id = 1 where id = 2;
+UPDATE 1
+postgres=# select * from course;
+ id | subject |  cost  | talaba_id 
+----+---------+--------+-----------
+  1 | IT      | 500000 |         1
+  2 | Math    | 400000 |         1
+(2 rows)
+
+postgres=# select * from talaba;
+ id |  name  | age 
+----+--------+-----
+  1 | Alibek |  12
+  2 | Abbos  |  15
+  3 | Karim  |  14
+(3 rows)
+
+postgres=# alter table talaba add column email varchar(50);
+ALTER TABLE
+postgres=# select * from talaba;
+ id |  name  | age | email 
+----+--------+-----+-------
+  1 | Alibek |  12 | 
+  2 | Abbos  |  15 | 
+  3 | Karim  |  14 | 
+(3 rows)
+
