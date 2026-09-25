@@ -1,0 +1,69 @@
+Jadval: students (ustunlar: id, name, age)
+
+id | name   | age
+---+--------+----
+1  | Jasur  | 19
+2  | Malika | 22
+3  | Otabek | 19
+4  | Jasur  | 25
+...
+
+--- DISTINCT ---
+
+1. Barcha yoshlarni takrorlanmasdan chiqaring.
+
+2. Barcha ismlarni takrorlanmasdan chiqaring.
+
+3. name va age juftliklarini takrorlanmasdan chiqaring.
+
+4. Takrorlanmas yoshlarni o'sish tartibida chiqaring.
+
+--- COUNT ---
+
+5. Jadvalda jami nechta qator borligini toping.
+
+6. Yoshi 20 dan katta bo'lgan talabalar sonini hisoblang.
+
+7. Nechta turli ism borligini toping.
+
+8. Nechta turli yosh borligini toping.
+
+9. Ismi "Jasur" bo'lgan talabalar sonini hisoblang.
+
+--- BETWEEN ---
+
+10. Yoshi 18 dan 25 gacha bo'lgan talabalarning ismlarini chiqaring.
+
+11. id si 5 dan 15 gacha bo'lgan qatorlarni chiqaring.
+
+12. Yoshi 30 dan 40 gacha bo'lgan talabalar sonini toping.
+
+13. Yoshi 20 dan 30 gacha bo'lmagan talabalarni chiqaring (NOT BETWEEN).
+
+--- ORDER BY ---
+
+14. Barcha talabalarni yoshi bo'yicha o'sish tartibida chiqaring.
+
+15. Barcha talabalarni yoshi bo'yicha kamayish tartibida chiqaring.
+
+16. Talabalarni ismi bo'yicha alifbo tartibida chiqaring.
+
+17. Avval yoshi bo'yicha kamayish, keyin ismi bo'yicha alifbo tartibida chiqaring.
+
+18. Eng katta yoshdagi 3 ta talabani chiqaring (LIMIT).
+
+--- LIKE (_ va %) ---
+
+19. Ismi "A" harfi bilan boshlanadigan talabalarni chiqaring.
+
+20. Ismi "a" harfi bilan tugaydigan talabalar sonini toping.
+
+21. Ismining ikkinchi harfi "a" bo'lgan talabalarning takrorlanmas ismlarini chiqaring.
+
+22. Yoshi 18 dan 25 gacha bo'lgan talabalar orasida nechta turli ism borligini toping.
+
+23. Yoshi 20 dan 40 gacha bo'lgan talabalarning takrorlanmas yoshlarini kamayish tartibida chiqaring.
+
+24. Ismi "M" harfi bilan boshlanadigan va yoshi 18 dan 22 gacha bo'lgan talabalar sonini hisoblang.
+
+25. id si 1 dan 10 gacha bo'lgan talabalar ichida eng katta yoshdagi 5 tasini ismi va yoshi bilan chiqaring.
