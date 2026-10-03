@@ -1,0 +1,56 @@
+====================================================================
+               GROUP BY VA HAVING BO'YICHA 40 TA SAVOL
+====================================================================
+
+--- [ 1-QISM: BAZAVIY GROUP BY SAVOLLARI ] ---
+
+1. Har bir mijoz (customer_id) umumiy qancha summalik xarid qilganini hisoblang.
+2. Har bir mijoz jami nechta xarid (tranzaksiya) amalga oshirganini toping.
+3. Har bir yosh guruhida (age bo'yicha) nechta mijoz borligini aniqlang.
+4. Har bir mijozning eng katta (MAX) va eng kichik (MIN) xarid summasini toping.
+5. Har bir mijozning o'rtacha (AVG) xarid summasini hisoblang.
+6. Har bir sana (purchased_date) bo'yicha jami qancha summa tushganini toping.
+7. Har bir sana bo'yicha nechta xarid amalga oshirilganini sanang.
+8. Har bir mijoz har bir sanada nechtadan xarid qilganini guruhlang (customer_id, purchased_date).
+9. Yosh bo'yicha mijozlarning o'rtacha yoshini va har bir yoshdagi mijozlar sonini chiqaruvchi so'rov yozing.
+10. Har bir sanadagi eng katta xarid summasi va eng kichik xarid summasini aniqlang.
+
+--- [ 2-QISM: BAZAVIY HAVING SAVOLLARI ] ---
+
+11. Jami xaridlar soni 5 tadan ko'p bo'lgan mijozlarni (customer_id) toping.
+12. Jami sarflagan summasi 1,000,000 dan yuqori bo'lgan mijozlarni aniqlang.
+13. O'rtacha xarid summasi 150,000 dan katta bo'lgan mijozlarni toping.
+14. Faqat 1 martagina xarid amalga oshirgan mijozlarni ro'yxatini chiqaring.
+15. Jami xarid summasi 500,000 dan kam bo'lgan mijozlarni toping.
+16. Xaridlari soni 3 tadan ko'p va jami summasi 2,000,000 dan oshgan mijozlarni aniqlang.
+17. Bitta tranzaksiyadagi eng katta xaridi (MAX) 500,000 dan yuqori bo'lgan mijozlarni toping.
+18. Bitta tranzaksiyadagi eng kichik xaridi (MIN) 50,000 dan katta bo'lgan mijozlarni chiqaring.
+19. Kamida 10 ta xarid qilgan mijozlarning customer_id va jami xarid summasini chiqaring.
+20. O'rtacha xarid summasi 50,000 va 200,000 oralig'ida bo'lgan mijozlarni toping.
+
+--- [ 3-QISM: SANA VA VAQT BO'YICHA GROUP BY & HAVING ] ---
+
+21. Jami xaridlar summasi 5,000,000 dan oshgan sanalarni (purchased_date) aniqlang.
+22. Kunlik xaridlar soni 20 tadan oshgan kunlarni toping.
+23. Kunlik o'rtacha xarid summasi 100,000 dan kam bo'lgan sanalarni chiqaring.
+24. Har bir mijoz bo'yicha faqat 2024-yilda qilgan xaridlari soni 3 tadan ko'p bo'lganlarni toping (WHERE + GROUP BY + HAVING).
+25. 2024-yil yanvar oyida jami xaridi 1,000,000 dan oshgan mijozlarni aniqlang.
+26. Bir kunda kamida 3 marta xarid qilgan mijozlar va o'sha sanalarni toping.
+27. Kunlik eng maksimal xaridi 2,000,000 dan oshgan kunlarni ro'yxatga oling.
+28. Faqat dam olish kunlarida (yoki ma'lum oylarda) 5 tadan ko'p xarid qilgan mijozlarni aniqlang.
+29. Har bir oy bo'yicha jami tushum 10,000,000 dan oshgan oylarni guruhlang.
+30. Kunlik tranzaksiyalar soni 1 tadan ko'p bo'lgan va o'rtacha summasi 300,000 dan yuqori kunlarni toping.
+
+--- [ 4-QISM: CHURKOR VA SHARTLI FILTERLASH ] ---
+
+31. Yosh bo'yicha guruhlaganda, tarkibida 3 tadan ko'p mijoz bor bo'lgan yosh guruhlarini toping.
+32. Yosh bo'yicha mijozlarning o'rtacha yoshi 30 dan katta bo'lgan yosh guruhlarini chiqaring.
+33. Faqat amount > 50,000 bo'lgan xaridlarni inobatga olgan holda, jami xaridi 5 tadan oshgan mijozlarni toping (WHERE va HAVING birgalikda).
+34. Faqat age >= 18 bo'lgan mijozlar orasida har bir yosh bo'yicha mijozlar soni 5 tadan oshgan guruhlarni aniqlang.
+35. Jami sarflagan summasi bo'yicha TOP-10 ga kirishi mumkin bo'lgan, ya'ni summasi 10,000,000 dan oshgan mijozlarni guruhlang.
+36. Har bir mijoz uchun amount > 100,000 bo'lgan xaridlar soni kamida 2 ta bo'lgan mijozlarni toping.
+37. Xaridlarining eng katta (MAX) va eng kichik (MIN) summalari orasidagi farq 1,000,000 dan katta bo'lgan mijozlarni aniqlang.
+38. Xaridlari soni juft son bo'lgan (COUNT(*) % 2 = 0) va jami summasi 500,000 dan oshgan mijozlarni toping.
+39. O'rtacha xaridi umumiy o'rtacha qiymatdan katta bo'lgan mijozlarni aniqlang (HAVING ichida subquery bilan).
+40. Barcha xaridlarining umumiy summasi, xaridlar soni 10 tadan oshgan mijozlar bo'yicha kamayish (DESC) tartibida saralang.
+====================================================================
