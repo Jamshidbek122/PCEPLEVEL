@@ -1,0 +1,581 @@
+# ================================================================================
+SQL BO'YICHA 250 TA AMALIY TOPSHIRIQ VA SAVOLLAR TO'PLAMI
+
+Mavzular:
+
+1. CREATE TABLE va Boshlang'ich Sozlamalar
+
+2. DISTINCT (Noyob qiymatlarni saralash) - 50 ta topshiriq
+
+3. ORDER BY (Ma'lumotlarni saralash) - 50 ta topshiriq
+
+4. FOREIGN KEY (Tashqi kalit va bog'liqliklar) - 50 ta topshiriq
+
+5. UPDATE (Ma'lumotlarni o'zgartirish va yangilash) - 50 ta topshiriq
+
+6. ALTER TABLE (Jadval tuzilishini o'zgartirish) - 50 ta topshiriq
+
+# ================================================================================
+0. BAZANI YARATISH VA TIZIMGA TAYYORLASH (CREATE TABLE)
+
+Quyidagi topshiriqlarni bajarish uchun avvalo bazani va asosiy jadvallarni yaratib oling:
+
+1. 'Department' (Bo'limlar) jadvalini yarating:
+
+   * dept_id (INT, PRIMARY KEY)
+
+   * dept_name (VARCHAR(50), NOT NULL)
+
+   * location (VARCHAR(50))
+
+2. 'Employee' (Xodimlar) jadvalini yarating:
+
+   * emp_id (INT, PRIMARY KEY)
+
+   * first_name (VARCHAR(50))
+
+   * last_name (VARCHAR(50))
+
+   * salary (DECIMAL(10,2))
+
+   * hire_date (DATE)
+
+   * job_title (VARCHAR(50))
+
+   * dept_id (INT, FOREIGN KEY -> Department.dept_id)
+
+3. 'Customer' (Mijozlar) jadvalini yarating:
+
+   * customer_id (INT, PRIMARY KEY)
+
+   * city (VARCHAR(50))
+
+   * country (VARCHAR(50))
+
+   * status (VARCHAR(20))
+
+4. 'Orders' (Buyurtmalar) jadvalini yarating:
+
+   * order_id (INT, PRIMARY KEY)
+
+   * order_date (DATE)
+
+   * total_amount (DECIMAL(10,2))
+
+   * customer_id (INT, FOREIGN KEY -> Customer.customer_id)
+
+# ================================================================================
+BO'LIM 1: DISTINCT BO'YICHA 50 TA TOPSHIRIQ
+
+ 1. Xodimlar jadvalidan barcha noyob lavozimlar (job_title) ro'yxatini chiqaring.
+
+ 2. Mijozlar qaysi turlicha shaharlardan (city) ekanligini DISTINCT yordamida aniqlang.
+
+ 3. Mijozlar joylashgan barcha noyob mamlakatlar (country) ro'yxatini oling.
+
+ 4. Xodimlar oladigan barcha har xil maosh (salary) qiymatlarini chiqaring.
+
+ 5. Buyurtmalar (Orders) jadvalidagi barcha noyob buyurtma sanalarini (order_date) ko'rsating.
+
+ 6. Xodimlar ishlaydigan barcha noyob bo'lim ID (dept_id) larini aniqlang.
+
+ 7. Xodimlar jadvalidagi barcha takrorlanmas ismlarni (first_name) chiqaring.
+
+ 8. Mijozlar jadvalidagi barcha noyob statuslarni (status) ro'yxat qiling.
+
+ 9. Buyurtmalar jadvalidagi barcha takrorlanmas summalar (total_amount) ro'yxatini oling.
+
+10. Bir vaqtning o'zida ham shahar (city), ham mamlakat (country) bo'yicha noyob juftliklarni chiqaring.
+
+11. Xodimlarning ishga kirgan yillari bo'yicha noyob qiymatlarni aniqlang.
+
+12. Xodimlar va bo'limlar kesimida noyob dept_id va job_title juftliklarini chiqaring.
+
+13. Buyurtma bergan barcha noyob customer_id larni ko'rsating.
+
+14. Buyurtmalar jadvalidagi summalar qiymatini yaxlitlab, noyob summalar ro'yxatini oling.
+
+15. Ishga kirgan oylari (hire_date oy qismi) bo'yicha noyob ko'rsatkichlarni aniqlang.
+
+16. Mijozlarning statusi va mamlakati bo'yicha noyob kombinatsiyalarini chiqaring.
+
+17. maosh (salary) va bo'lim (dept_id) bo'yicha noyob juftliklarni aniqlang.
+
+18. Xodimlarning familiyalaridagi noyob bosh harflarni chiqaring.
+
+19. Bir xil maosh oladigan va bir xil bo'limda ishlaydigan noyob birikmalarni oling.
+
+20. Buyurtma sanasi va customer_id bo'yicha noyob juftliklarni ko'rsating.
+
+21. Shahar nomi 5 harfdan uzun bo'lgan mijozlarning noyob shaharlarini chiqaring.
+
+22. Maoshi 3000 dan yuqori bo'lgan xodimlarning noyob lavozimlarini (job_title) aniqlang.
+
+23. 2023-yildan keyin ishga kirgan xodimlarning noyob dept_id larini oling.
+
+24. Status 'ACTIVE' bo'lgan mijozlarning noyob mamlakatlarini ko'rsating.
+
+25. Total_amount 100 dan yuqori bo'lgan buyurtmalarning noyob sanalarini chiqaring.
+
+26. Familiyasi 'S' harfidan boshlanadigan xodimlarning noyob lavozimlarini aniqlang.
+
+27. Shahri 'Tashkent' yoki 'Samarkand' bo'lgan mijozlarning noyob statuslarini oling.
+
+28. Maoshi 2000 va 5000 oralig'ida bo'lgan xodimlarning noyob maoshlarini chiqaring.
+
+29. Muayyan bo'limda (dept_id = 2) ishlaydigan xodimlarning noyob lavozimlarini toping.
+
+30. Buyurtma summasi 500 dan kam bo'lgan mijozlarning noyob customer_id larini oling.
+
+31. DISTINCT va COUNT birga ishlatib, nechta noyob lavozim borligini hisoblang.
+
+32. Nechta har xil shahar mijozlar jadvalida borligini DISTINCT yordamida sanang.
+
+33. Nechta noyob customer_id buyurtma berganini hisoblang.
+
+34. Nechta noyob maosh miqdori mavjudligini sanang.
+
+35. Nechta har xil mamlakat vakillari borligini aniqlang.
+
+36. Bo'limlar bo'yicha nechta noyob lavozimlar borligini sanang.
+
+37. Qaysi yillarda xodimlar ishga kirganini noyob holda sanang.
+
+38. Buyurtmalar jadvalida nechta noyob sana borligini aniqlang.
+
+39. Noyob statuslar sonini hisoblang.
+
+40. Har bir shahardagi noyob statuslar sonini aniqlang.
+
+41. Shahar nomi 'A' bilan tugaydigan mijozlarning noyob mamlakatlarini chiqaring.
+
+42. Ismi 4 harfdan iborat xodimlarning noyob lavozimlarini oling.
+
+43. Maoshi juft son bo'lgan xodimlarning noyob maoshlarini ko'rsating.
+
+44. Buyurtma summasi nol bo'lmagan noyob total_amount larni aniqlang.
+
+45. Oxirgi 30 kunda berilgan buyurtmalarning noyob customer_id larini oling.
+
+46. Har bir dept_id dagi noyob maosh qiymatlarini chiqaring.
+
+47. Mijoz mamlakati va shahri birlashmasidan noyob manzillarni hosil qiling.
+
+48. Lavozimida 'Manager' so'zi qatnashgan xodimlarning noyob maoshlarini oling.
+
+49. Yil va oy kesimida noyob buyurtma sanalarini chiqaring.
+
+50. Xodimlarning bir xil ism va familiyaga ega bo megan noyob to'liq ismlarini chiqaring.
+
+# ================================================================================
+BO'LIM 2: ORDER BY BO'YICHA 50 TA TOPSHIRIQ
+
+ 51. Xodimlarni maoshi bo'yicha o'sish (ASC) tartibida saralang.
+
+ 52. Xodimlarni maoshi bo'yicha kamayish (DESC) tartibida saralang.
+
+ 53. Mijozlarni alifbo bo'yicha shahar (city) nomi bilan saralang.
+
+ 54. Buyurtmalarni sana (order_date) bo'yicha eng yangisidan eng eski sanagacha saralang.
+
+ 55. Xodimlarni ism-familiyasi bo'yicha alifbo ketma-ketligida saralang.
+
+ 56. Buyurtmalarni umumiy summa (total_amount) bo'yicha kamayish tartibida saralang.
+
+ 57. Xodimlarni ishga kirgan sanasi (hire_date) bo'yicha saralang.
+
+ 58. Bo'limlarni nomlari bo'yicha alifbo tartibida saralang.
+
+ 59. Mijozlarni mamlakat (country) va keyin shahar (city) bo'yicha saralang.
+
+ 60. Xodimlarni dept_id bo'yicha o'sish, maosh bo'yicha kamayish tartibida saralang.
+
+ 61. Buyurtmalarni customer_id bo'yicha va keyin total_amount bo'yicha kamayuvchi saralang.
+
+ 62. Xodimlarni job_title va salary bo'yicha mos ravishda saralang.
+
+ 63. Mijozlarni status va country ustunlari bo'yicha saralang.
+
+ 64. Ismi 'A' bilan boshlanadigan xodimlarni maoshi bo'yicha kamayish tartibida saralang.
+
+ 65. Buyurtma summasi 200 dan yuqori bo'lganlarni order_date bo'yicha saralang.
+
+ 66. 2022-yilda ishga kirgan xodimlarni hire_date bo'yicha tartiblang.
+
+ 67. Shahri 'Tashkent' bo'lgan mijozlarni familiyasi bo'yicha saralang.
+
+ 68. Dept_id = 1 bo'lgan xodimlarni maoshi bo'yicha o'sish tartibida saralang.
+
+ 69. Maoshi 1000 va 3000 orasida bo'lgan xodimlarni ism bo'yicha saralang.
+
+ 70. Statusi 'INACTIVE' bo'lgan mijozlarni id bo'yicha kamayish tartibida saralang.
+
+ 71. Ustun tartib raqamidan foydalanib (masalan ORDER BY 2) xodimlarni saralang.
+
+ 72. Birinchi va uchunchi ustunlar bo'yicha xodimlarni saralang.
+
+ 73. Ustun o'rniga taxallus (ALIAS) ishlatib, maosh bo'yicha saralang.
+
+ 74. Ism uzunligi (LENGTH(first_name)) bo'yicha xodimlarni saralang.
+
+ 75. Maoshga 10% bonus qo'shilgan qiymat bo'yicha xodimlarni kamayish tartibida saralang.
+
+ 76. Buyurtma sanasining yil qismi bo'yicha saralang.
+
+ 77. Xodimlarni familiyasining oxirgi harfi bo'yicha saralang.
+
+ 78. NULL qiymatga ega bo'lgan maoshlarni eng birinchi chiqarish tartibida saralang.
+
+ 79. NULL qiymatlarni eng oxirida chiqarish tartibida saralang (NULLS LAST).
+
+ 80. Maoshi teng bo'lgan xodimlarni job_title bo'yicha tartiblang.
+
+ 81. Eng yuqori maosh oladigan 5 ta xodimni ORDER BY va LIMIT yordamida chiqaring.
+
+ 82. Eng kam summadagi 3 ta buyurtmani ko'rsating.
+
+ 83. Eng oxirgi ishga kirgan 10 ta xodimni saralab chiqaring.
+
+ 84. Eng katta 5 ta buyurtmani order_date bo'yicha tartiblang.
+
+ 85. Alifbo bo'yicha eng oxirida turadigan 3 ta shaharni chiqaring.
+
+ 86. Maoshi eng kam bo'lgan 5 ta xodimni ko'rsating.
+
+ 87. Eng eski 5 ta buyurtmani chiqaring.
+
+ 88. Buyurtma summasi bo'yicha top-10 talikni ko'rsating.
+
+ 89. Eng ko'p maosh oluvchi 3-dan 7-o'rindagilarni offset bilan saralab chiqaring.
+
+ 90. Ismi eng uzun 5 ta xodimni saralang.
+
+ 91. Maosh bo'yicha kamayish va ism bo'yicha o'sish aralash tartibini qo'llang.
+
+ 92. Bo'lim ID si bo'yicha kamayish, ishga kirgan sanasi bo'yicha o'sish tartibida saralang.
+
+ 93. Mamlakat bo'yicha o'sish, status bo'yicha kamayish tartibida saralang.
+
+ 94. Har bir bo'limdagi xodimlarni maosh tartibida saralang.
+
+ 95. Ishga kirgan yili bo'yicha kamayish, maoshi bo'yicha o'sish tartibida saralang.
+
+ 96. Barcha xodimlarni maoshi va ismi bo'yicha umumiy saralang.
+
+ 97. Buyurtmalarni mijoz ID si va umumiy narx tartibida saralang.
+
+ 98. Xodimlarni lavozim (job_title) va maosh bo'yicha tartiblang.
+
+ 99. Mijozlarni status va shahar bo'yicha tartiblang.
+
+100. Department jadvalini dept_name bo'yicha alifbo tartibida saralang.
+
+# ================================================================================
+BO'LIM 3: FOREIGN KEY (TASHQI KALIT) BO'YICHA 50 TA TOPSHIRIQ
+
+101. Department jadvaliga ulangan holatda Employee jadvaliga yangi xodim qo megn foreign key bog'liqligi to'g'riligini tekshiring.
+
+102. Noto'g'ri (bazada yo'q) dept_id bilan xodim qo'shishga urinib ko'ring va xatolikni kuzating.
+
+103. Foreign key orqali Employee va Department jadvallarini JOIN qilib xodimlarning bo'lim nomlarini chiqaring.
+
+104. Customer va Orders jadvallarini Foreign Key (customer_id) orqali bog'lab buyurtmalarni ko'rsating.
+
+105. FOREIGN KEY cheklovi mavjud bo'lganda ota jadvaldagi (Department) ma'lumotni o'chirishga urinib ko'ring.
+
+106. ON DELETE CASCADE xususiyati bilan yangi foreign key bog'lanishini tahlil qiling.
+
+107. ON DELETE SET NULL xususiyatining ishlash mexanizmini amalda qo'llang.
+
+108. Foreign Key ustuniga NULL qiymat qo'shish mumkinligini tekshiring.
+
+109. ON UPDATE CASCADE ishlatilganda ota jadvaldagi ID o'zgarsa bolalar jadvalida o'zgarishini kuzating.
+
+110. Mavjud jadvalga ALTER TABLE yordamida Foreign Key cheklovini qo'shing.
+
+111. Foreign Key chekloviga nom (CONSTRAINT constraint_name) bering.
+
+112. Yaratilgan Foreign Key constraint-ni nom bo'yicha o'chirib tashlang.
+
+113. Bir nechta ustunlardan iborat composite Foreign Key yaratish haqida so'rov yozing.
+
+114. Foreign key orqali bog'langan jadvallardan xodim va uning bo'lim nomini SELECT qiling.
+
+115. Muayyan bo'limga tegishli barcha xodimlarni Foreign Key orqali toping.
+
+116. Hech qanday buyurtmasi bo'lmagan mijozlarni Foreign Key orqali LEFT JOIN qilib aniqlang.
+
+117. Foreign key chekloviga ko'ra o'chirilmayotgan qatorni toping.
+
+118. Ota jadvalda mavjud bo'lgan dept_id lar ro'yxatini chiqaring.
+
+119. Bog'langan jadvallardagi ma'lumotlar sonini compare (solishtirish) qiling.
+
+120. CASCADE parametri o'rnatilgan holda bo'limni o'chiring va xodimlar o'chib ketishini ko'ring.
+
+121. Foreign key bo'yicha index yaratish so'rovini yozing.
+
+122. Barcha Foreign Key cheklovlari ro'yxatini information_schema dan izlang.
+
+123. Foreign key orqali ulangan jadvallardan INNER JOIN yordamida barcha ma'lumotlarni oling.
+
+124. Bo'limi o'chirilganda xodimning dept_id si NULL bo'lishini sozlang.
+
+125. Buyurtmalar va mijozlar o'rtasida Foreign Key mavjudligini tekshiring.
+
+126. Bir xil jadvalning o'ziga yo'naltirilgan Self-Referencing Foreign Key (masalan manager_id) yarating.
+
+127. Self-referencing foreign key orqali xodimlarning rahbari kimligini aniqlang.
+
+128. Foreign key cheklovini vaqtincha o'chirish (DISABLE CONSTRAINT) so'rovini yozing.
+
+129. Foreign key cheklovini qayta yoqish (ENABLE CONSTRAINT) so'rovini yozing.
+
+130. Foreign key o'rnatilgan ustunga unikal bo'lmagan qiymat kiritib ko'ring.
+
+131. Bo'lim nomi 'IT' bo'lgan xodimlarning ro'yxatini Foreign Key orqali chiqaring.
+
+132. Buyurtma bergan mijozlarning ism va shaharlarini Foreign Key orqali ko'rsating.
+
+133. Foreign key orqali 3 ta jadvalni (masalan: Order, Customer, Department) birga JOIN qiling.
+
+134. Bog'langan jadvallar bo'yicha maoshlar yig'indisini bo'limlar kesimida hisoblang.
+
+135. Har bir bo'limda nechta xodim borligini Foreign Key yordamida JOIN va GROUP BY qilib toping.
+
+136. Qaysi mijoz eng ko'p buyurtma berganini Foreign Key orqali aniqlang.
+
+137. Ota jadvalda qator bo'lmasa, bola jadvalga ma'lumot qo'shib bo'lmasligini xatolik matni bilan sinang.
+
+138. Foreign Key ustunidagi takrorlanuvchi qiymatlarni count qiling.
+
+139. Har bir mijozning umumiy harid summasini Foreign Key bog'lanishi orqali toping.
+
+140. Foreign key constraint nomini o'zgartirish so'rovini yozing.
+
+141. RESTRICT opsiyasining FOREIGN KEY dagi vazifasini sinab ko'ring.
+
+142. NO ACTION parametri ishlatilganda xatolik qanday yuz berishini kuzating.
+
+143. Ota va bola jadvallardan bir vaqtda ma ma'lumotlarni SELECT qiling.
+
+144. Bir nechta Foreign Key ga ega bo'lgan uchinchi bog'lovchi jadval yarating.
+
+145. Foreign Key orqali bog'langan jadvallardan ma'lumotlarni DELETE qilish ketma-ketligini yozing.
+
+146. Ota jadvaldagi ID ni UPDATE qilganda bola jadval avto-yangilanishini (CASCADE) ko'rsating.
+
+147. Barcha dept_id larning Employee va Department jadvallarida mosligini tekshiring.
+
+148. Foreign key ustunida ishlatilgan indekslarni aniqlang.
+
+149. Noto'g'ri tipdagi Foreign Key yaratishda chiqadigan xatolikni kuzating.
+
+150. Foreign key cheklovlarini to'g'ri tartibda DROP TABLE qilish tartibini yozing.
+
+# ================================================================================
+BO'LIM 4: UPDATE BO'YICHA 50 TA TOPSHIRIQ
+
+151. ID si 5 bo'lgan xodimning maoshini 5000 ga oshiring.
+
+152. ID si 10 bo'lgan mijozning statusini 'ACTIVE' ga o'zgartiring.
+
+153. Barcha xodimlarning maoshini 10% ga oshiring.
+
+154. Shahri 'Tashkent' bo'lgan barcha mijozlarning mamlakatini 'Uzbekistan' qiling.
+
+155. ID si 102 bo'lgan buyurtmaning summasini (total_amount) 350.00 ga o'zgartiring.
+
+156. Bo'lim ID si 3 bo'lgan xodimlarning lavozimini 'Senior Developer' ga o'zgartiring.
+
+157. Barcha 'INACTIVE' statusdagi mijozlarni 'PENDING' statusiga o'tkazing.
+
+158. Hire_date sanasi 2020-yildan oldin bo'lgan xodimlarga 500 dollar bonus qo'shing.
+
+159. ID si 1 bo'lgan bo'lim nomini 'Human Resources' ga o'zgartiring.
+
+160. Familiyasi 'Smith' bo'lgan xodimning ismini 'John' ga o'zgartiring.
+
+161. Xodimning ham maoshini (6000), ham lavozimini ('Team Lead') bir UPDATE so'rovida o'zgartiring.
+
+162. Mijozning ham shahri ('Samarkand'), ham statusini ('VIP') bir vaqtda yangilang.
+
+163. Buyurtmaning sanasi va summasini bitta UPDATE bilan o'zgartiring.
+
+164. Bo'limning nomi va joylashuvini bir vaqtda yangilang.
+
+165. Xodimlarning ism va familiyasini birgalikda o'zgartiring.
+
+166. Maoshi 2000 dan kam bo'lgan xodimlarning maoshini 2500 ga yetkazing.
+
+167. Statusi 'PENDING' va mamlakati 'USA' bo'lgan mijozlarni 'ACTIVE' qiling.
+
+168. 2021-yilda berilgan buyurtmalarning summasiga 5% chegirma qo'llang (kamaytiring).
+
+169. Lavozimi 'Sales Manager' va dept_id si 2 bo'lgan xodimlarning maoshini 15% ga oshiring.
+
+170. Shahri NULL bo'lgan mijozlarning shahrini 'Unknown' qiling.
+
+171. Subquery yordamida: 'IT' bo'limida ishlaydigan barcha xodimlarning maoshini 20% oshiring.
+
+172. Subquery yordamida: Eng ko'p xarid qilgan mijozning statusini 'PLATINUM' qiling.
+
+173. Subquery yordamida: O'rtacha maoshdan kam oladigan xodimlarning maoshini 10% ga oshiring.
+
+174. Subquery yordamida: 'Sales' bo'limidagi xodimlarning dept_id sini 'Marketing' bo'limi ID siga o'zgartiring.
+
+175. Subquery yordamida: Hech qanday buyurtma bermagan mijozlarning statusini 'INACTIVE' qiling.
+
+176. Barcha xodimlarning ismini bosh harf bilan yoziladigan qilib yangilang (UPPER).
+
+177. Familiyalardagi ortiqcha bo'sh joylarni TRIM yordamida olib tashlab yangilang.
+
+178. Buyurtma sanalarini 1 kunga surish (keyingi kunga o'tkazish) so'rovini yozing.
+
+179. Maoshlarni yaxlitlab (ROUND) butun son ko'rinishiga keltiring.
+
+180. Shahar nomlarini kichik harflarga (LOWER) o'tkazib yangilang.
+
+181. Department jadvalidagi location ustunini 'Headquarters' ga o'zgartiring.
+
+182. Buyurtma summasi 1000 dan yuqori bo'lgan buyurtmalar sanasini bugungi sanaga (CURRENT_DATE) o'zgartiring.
+
+183. Ishga kirganiga 5 yildan oshgan xodimlarning dept_id sini 5-bo'limga o'tkazing.
+
+184. ID si 1, 3, 5 bo'lgan xodimlarning maoshiga 300 qo'shing (IN operatoidan foydalaning).
+
+185. Statusi 'VIP' bo'lmagan barcha mijozlarning statusini 'REGULAR' qiling.
+
+186. Dept_id si NULL bo'lgan xodimlarni 1-bo'limga biriktiring.
+
+187. Ismi 'A' bilan boshlanadigan xodimlarning maoshini 5% ga oshiring.
+
+188. Buyurtma summasi NULL bo'lgan satrlarni 0.00 bilan to'ldiring.
+
+189. Shahri 'London' bo'lgan mijozlarning mamlakatini 'UK' ga o'zgartiring.
+
+190. Lavozimida 'Assistant' so'zi bor xodimlarning maoshini 1000 ga o'zgartiring.
+
+191. Barcha xodimlarning maoshini o'z bo'limidagi eng maksimal maoshga tenglashtirib yangilang.
+
+192. Har bir mijozning statusini ularning buyurtmalar soniga qarab yangilang.
+
+193. UPDATE so'rovida CASE WHEN ishlatib, maoshga qarab har xil % qo'shing.
+
+194. Buyurtma summasi 500 dan oshsa 'LARGE', aks holda 'SMALL' deb status yangilang (agar shunday ustun bo'lsa).
+
+195. Xodimlarning hiring_date sanasidan yilni ajratib olib boshqa ustunga o'tkazing.
+
+196. Dept_id 2 va 3 bo'lgan xodimlarning maoshlarini mos ravishda 500 ga oshiring.
+
+197. Jadvaldagi barcha qatorlarning statusini 'PROCESSED' qiling (WHERE siz UPDATE).
+
+198. UPDATE bajarishda ehtiyotkorlik uchun tranzaksiya (BEGIN TRANSACTION, ROLLBACK, COMMIT) ishlatib ko'ring.
+
+199. RETURNING bandidan foydalanib o'zgargan maoshlarni UPDATE vaqtida ko'rib oling.
+
+200. Barcha UPDATE amallaridan so'ng natijani SELECT qilib tekshirish so'rovini yozing.
+
+# ================================================================================
+BO'LIM 5: ALTER TABLE BO'YICHA 50 TA TOPSHIRIQ
+
+201. Employee jadvaliga 'email' (VARCHAR(100)) nomli yangi ustun qo'shing.
+
+202. Customer jadvaliga 'phone_number' (VARCHAR(20)) ustunini qo'shing.
+
+203. Department jadvaliga 'budget' (DECIMAL(12,2)) ustunini qo'shing.
+
+204. Orders jadvaliga 'payment_method' (VARCHAR(30)) ustunini qo'shing.
+
+205. Employee jadvaliga 'age' (INT) ustunini qo'shing.
+
+206. Employee jadvalidan 'age' ustunini o'chirib tashlang (DROP COLUMN).
+
+207. Customer jadvalidan 'phone_number' ustunini o'chiring.
+
+208. Department jadvalidan 'budget' ustunini o'chiring.
+
+209. Orders jadvalidan 'payment_method' ustunini o'chiring.
+
+210. Employee jadvalidan 'email' ustunini o'chirib tashlang.
+
+211. Employee jadvalidagi 'first_name' ustuni turini VARCHAR(100) ga o'zgartiring.
+
+212. Customer jadvalidagi 'city' ustuni ma'lumot turini VARCHAR(80) ga oshiring.
+
+213. Employee jadvalidagi 'salary' ustuni ma'lumot turini FLOAT ga o'zgartiring.
+
+214. Orders jadvalidagi 'total_amount' ma'lumot turini DECIMAL(12,2) ga o'zgartiring.
+
+215. Department jadvalidagi 'dept_name' ustunini VARCHAR(100) ga kengaytiring.
+
+216. Employee jadvalidagi 'email' ustuniga UNIQUE cheklovini (CONSTRAINT) qo'shing.
+
+217. Employee jadvalidagi 'salary' ustuniga NOT NULL cheklovini o'rnating.
+
+218. Customer jadvalidagi 'status' ustuniga DEFAULT 'ACTIVE' qiymatini belgilang.
+
+219. Orders jadvalidagi 'total_amount' ustuniga CHECK (total_amount >= 0) cheklovini qo'shing.
+
+220. Employee jadvalidagi 'hire_date' ustuniga DEFAULT CURRENT_DATE o'rnating.
+
+221. Employee jadvalidagi 'email_unique' deb nomlangan UNIQUE cheklovni o'chiring.
+
+222. Employee jadvalidagi 'salary' ustunidan NOT NULL cheklovini olib tashlang.
+
+223. Customer jadvalidagi 'status' ustunidan DEFAULT qiymatni olib tashlang (DROP DEFAULT).
+
+224. Orders jadvalidagi CHECK cheklovini o'chirib tashlang.
+
+225. Employee jadvalidagi hire_date ustunidan DEFAULT qiymatni o'chiring.
+
+226. Employee jadvalidagi 'job_title' ustuni nomini 'position' ga o'zgartiring (RENAME COLUMN).
+
+227. Customer jadvalidagi 'city' ustuni nomini 'town' ga o'zgartiring.
+
+228. Department jadvalidagi 'location' ustunini 'address' deb qayta nomlang.
+
+229. Orders jadvalidagi 'total_amount' ustunini 'price_total' deb nomlang.
+
+230. Employee jadvalidagi 'salary' ustunini 'monthly_salary' ga o'zgartiring.
+
+231. 'Customer' jadvalining nomini 'Clients' ga o'zgartiring (RENAME TO).
+
+232. 'Department' jadvalining nomini 'Departments' ga o'zgartiring.
+
+233. 'Orders' jadvali nomini 'Customer_Orders' ga o'zgartiring.
+
+234. Qayta nomlangan 'Clients' jadvali nomini yana 'Customer' ga qaytaring.
+
+235. 'Departments' jadvali nomini qayta 'Department' ga o'tkazing.
+
+236. Employee jadvaliga yangi PRIMARY KEY cheklovini qo'shing (agar mavjud bo'lmasa).
+
+237. Orders jadvaliga yangi FOREIGN KEY (customer_id) constraint qo'shing.
+
+238. Employee jadvaliga dept_id bo'yicha FOREIGN KEY constraint qo'shing.
+
+239. Employee jadvalidagi Primary Key constraint nomini o'zgartiring.
+
+240. Jadvaldagi mavjud Foreign Key constraint-ni nom bo'yicha o'chirib tashlang.
+
+241. Employee jadvaliga bir vaqtning o'zida ikkita yangi ustun (address, zipcode) qo'shing.
+
+242. Customer jadvalidan bir vaqtning o'zida ikkita ustunni o'chirib tashlang.
+
+243. Employee jadvalidagi ikkita ustunning ma'lumot turini bitta ALTER TABLE so'rovida o'zgartiring.
+
+244. Employee jadvaliga 'is_active' (BOOLEAN, DEFAULT TRUE) ustunini qo'shing.
+
+245. Orders jadvaliga 'created_at' (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP) ustunini qo'shing.
+
+246. Employee jadvalidagi 'salary' ustuniga CHECK (salary > 0) cheklovini o'rnating.
+
+247. Customer jadvalidagi 'country' ustuniga NOT NULL cheklovini o'rnating.
+
+248. Department jadvaliga 'description' (TEXT) ustunini qo'shing.
+
+249. Employee jadvalidan 'is_active' ustunini o'chirib tashlang.
+
+250. Barcha ALTER TABLE amallaridan so'ng jadvallar tuzilishini (DESCRIBE / \\d) tekshiring.
+     ================================================================================
