@@ -1,0 +1,237 @@
+BILIMNI MUSTAHKAMLOVCHI 70 TA SAVOL
+Python (25) • SQL (25) • Django (20)
+
+Ko‘rsatma: savollarga variantlarsiz, o‘zingiz yozib javob bering.
+"Natijasi nima?" savollarida kodni ishga tushirishdan oldin javobni taxmin qiling,
+keyin tekshirib ko‘ring.
+
+======================================================================
+1-QISM. PYTHON (1–25)
+======================================================================
+
+1. Ro‘yxat (list) va kortej (tuple) o‘rtasidagi asosiy farq nima? Har biriga
+   bittadan misol keltiring.
+
+2. Quyidagi kod nima chiqaradi?
+       print(11 // 4, 11 % 4, 3 ** 3)
+
+3. set nima uchun ishlatiladi? len({10, 10, 20, 30}) natijasi nima va nima uchun?
+
+4. Quyidagi kod natijasini yozing:
+       x = [1, 2, 3, 4, 5]
+       print(x[-1], x[1:4], x[::-1])
+
+5. Lug‘atda d['a'] va d.get('a', 0) o‘rtasidagi farq nima? Kalit mavjud bo‘lmasa
+   har biri nima qiladi?
+
+6. Quyidagi kod qanday sonlarni chiqaradi?
+       for i in range(1, 6):
+           if i == 3:
+               continue
+           print(i)
+
+7. break, continue va pass kalit so‘zlarining farqini tushuntiring.
+
+8. Son juft bo‘lsa True, aks holda False qaytaruvchi funksiya yozing.
+
+9. print va return o‘rtasidagi farq nima? Qisqa misol bilan tushuntiring.
+
+10. Quyidagi kod nima chiqaradi va natija qaysi turda?
+        def f(*args):
+            return args
+        print(f(1, 2, 3))
+
+11. **kwargs nima? def info(**kwargs) funksiyasini ikkita nomli argument bilan
+    chaqiring va funksiya ichida kwargs qanday ko‘rinishda bo‘lishini yozing.
+
+12. 1 dan 10 gacha sonlarning kvadratlaridan iborat ro‘yxatni list comprehension
+    yordamida hosil qiling.
+
+13. [x * 2 for x in range(3)] natijasi nima?
+
+14. enumerate() nima qiladi? ["a", "b", "c"] ro‘yxatini indekslari bilan birga
+    chiqaruvchi kod yozing.
+
+15. try, except, else va finally bloklarining vazifasini tushuntiring.
+    Qaysi biri xato bo‘lsa ham, bo‘lmasa ham bajariladi?
+
+16. Quyidagi kod ekranga nimalar chiqaradi (tartibi bilan)?
+        try:
+            print(10 / 0)
+        except ZeroDivisionError:
+            print("Xato")
+        finally:
+            print("Tugadi")
+
+17. Natijalarni yozing:
+        bool(""), bool(0), bool("0"), bool([])
+
+18. Natijalarni yozing:
+        print(5 > 2 and 3 == 3)
+        print(not (5 > 2))
+
+19. Sinf (class) va obyekt o‘rtasidagi farq nima? __init__ metodi qachon
+    ishga tushadi?
+
+20. Student sinfini yozing: ism va yosh qabul qilsin, salom() metodi
+    "Men <ism>man" deb chiqarsin.
+
+21. s = "Python" bo‘lsa, quyidagilarning natijasini yozing:
+        s[0], s[-1], s.upper(), len(s)
+
+22. Ro‘yxatdagi eng katta sonni max() funksiyasisiz, sikl yordamida topuvchi
+    kod yozing.
+
+23. Matndagi har bir harf necha marta uchrashini lug‘at yordamida sanovchi
+    kod yozing. (Masalan, "salom" uchun {'s': 1, 'a': 1, 'l': 1, 'o': 1, 'm': 1})
+
+24. import kalit so‘zi nima uchun kerak? import math dan keyin
+    math.sqrt(16) natijasi nima bo‘ladi?
+
+25. Quyidagi kodda xatoni toping va tushuntiring:
+        x = [1, 2, 3]
+        print(x[3])
+
+======================================================================
+2-QISM. SQL (26–50)
+======================================================================
+
+26. students jadvalini yaratuvchi SQL yozing:
+    id (PRIMARY KEY), ism (matn, 50 belgigacha), yosh (butun son).
+
+27. PRIMARY KEY nima vazifani bajaradi? U FOREIGN KEY dan qanday farq qiladi?
+
+28. students jadvaliga (1, 'Ali', 17) yozuvini qo‘shuvchi so‘rov yozing.
+
+29. students jadvalidan avval barcha ustunlarni, keyin faqat ism va yosh
+    ustunlarini tanlovchi so‘rovlarni yozing.
+
+30. Yoshi 18 dan katta talabalarni ism bo‘yicha alifbo tartibida chiqaruvchi
+    so‘rov yozing.
+
+31. ORDER BY da ASC va DESC nimani anglatadi? Eng katta yoshdagi 3 ta talabani
+    chiqaruvchi so‘rov yozing.
+
+32. id = 1 bo‘lgan talabaning yoshini 18 ga o‘zgartiruvchi UPDATE so‘rovini
+    yozing. WHERE qismi yozilmasa nima bo‘ladi?
+
+33. id = 1 bo‘lgan talabani jadvaldan o‘chiruvchi so‘rov yozing.
+
+34. DELETE, TRUNCATE va DROP TABLE o‘rtasidagi farqni tushuntiring.
+
+35. students jadvaliga email ustunini qo‘shuvchi, so‘ng yosh ustunini
+    o‘chiruvchi ALTER TABLE so‘rovlarini yozing.
+
+36. DISTINCT nima uchun ishlatiladi? students jadvalidagi takrorlanmas
+    shaharlar (city ustuni) ro‘yxatini oluvchi so‘rov yozing.
+
+37. COUNT(*), COUNT(ustun) va COUNT(DISTINCT ustun) o‘rtasidagi farqni
+    tushuntiring.
+
+38. SUM, AVG, MIN va MAX funksiyalari nima qiladi? Talabalarning o‘rtacha
+    yoshini topuvchi so‘rov yozing.
+
+39. WHERE va HAVING o‘rtasidagi farq nima? Qaysi biri GROUP BY dan oldin
+    ishlaydi?
+
+40. Har bir kursdagi talabalar sonini chiqaruvchi GROUP BY so‘rovini yozing
+    (students jadvalida kurs_id ustuni bor).
+
+41. Talabalar soni 5 tadan ko‘p bo‘lgan kurslarnigina chiqaruvchi HAVING
+    so‘rovini yozing.
+
+42. LIKE operatori nima uchun ishlatiladi? Ismi 'A' harfi bilan boshlanadigan
+    talabalarni topuvchi so‘rov yozing.
+
+43. IN va BETWEEN operatorlari uchun bittadan misol so‘rov yozing.
+
+44. NULL qiymat nima? Nima uchun WHERE yosh = NULL to‘g‘ri ishlamaydi va
+    to‘g‘ri yozilishi qanday?
+
+45. JOIN nima uchun kerak? students va kurslar jadvallarini
+    students.kurs_id = kurslar.id shartida birlashtirib, talaba ismi va
+    kurs nomini chiqaruvchi so‘rov yozing.
+
+46. INNER JOIN va LEFT JOIN o‘rtasidagi farq nima? Misol bilan tushuntiring.
+
+47. students jadvali berilgan:
+        (1, 'Ali', 17), (2, 'Vali', 19), (3, 'Sami', 24)
+    Quyidagi so‘rov natijasi nima?
+        SELECT COUNT(*) FROM students WHERE yosh > 18;
+
+48. Yuqoridagi jadval uchun quyidagi so‘rovlar natijasini yozing:
+        SELECT AVG(yosh) FROM students;
+        SELECT ism FROM students ORDER BY yosh DESC LIMIT 1;
+
+49. Tranzaksiya nima? COMMIT va ROLLBACK nima qiladi?
+
+50. INDEX nima uchun ishlatiladi va uning qanday kamchiligi bor?
+
+======================================================================
+3-QISM. DJANGO (51–70)
+======================================================================
+
+51. Django nima? MVT arxitekturasining har bir qismini (Model, View, Template)
+    qisqacha tushuntiring.
+
+52. Yangi loyiha (mysite) va ilova (blog) yaratuvchi buyruqlarni yozing.
+
+53. Rivojlanish serverini ishga tushiruvchi buyruq qaysi?
+
+54. Post modelini yozing: title (CharField, 100 belgi), body (TextField),
+    created (DateTimeField, avtomatik to‘ldiriladigan).
+
+55. makemigrations va migrate o‘rtasidagi farq nima? Ular qaysi tartibda
+    bajariladi?
+
+56. settings.py dagi DATABASES va INSTALLED_APPS nima vazifani bajaradi?
+    Yangi ilovani qayerga yozish kerak?
+
+57. Modelni admin panelda ko‘rsatish uchun nima yozish kerak? Admin
+    foydalanuvchisini yaratuvchi buyruq qaysi?
+
+58. urls.py da 'posts/' manzilini views.post_list funksiyasiga bog‘lovchi
+    kod yozing.
+
+59. Quyidagi yo‘lda <int:id> nimani anglatadi?
+        path('post/<int:id>/', views.detail)
+
+60. post_list view’ini yozing: barcha postlarni bazadan olib, 'posts.html'
+    shabloniga uzatsin.
+
+61. render() va redirect() funksiyalari o‘rtasidagi farq nima?
+
+62. QuerySet nima? Post.objects.all(), filter(), get() va exclude()
+    metodlarining farqini tushuntiring.
+
+63. get() bilan qidirilgan obyekt topilmasa nima bo‘ladi? Buni xavfsizroq
+    qilish uchun qaysi funksiyadan foydalanish mumkin?
+
+64. QuerySet nima uchun "lazy" (dangasa) deyiladi? Quyidagi kodda baza
+    aynan qaysi qatorda so‘raladi?
+        posts = Post.objects.filter(title__contains='SQL')
+        posts = posts.order_by('-id')
+        for p in posts:
+            print(p.title)
+
+65. Quyidagi ORM kodiga mos keladigan SQL so‘rovini yozing:
+        Post.objects.filter(title__contains='SQL').order_by('-id')
+
+66. Shablonda posts ro‘yxatini aylanib, har bir postning title qiymatini
+    chiqaruvchi {% for %} sikli yozing.
+
+67. {% extends %} va {% block %} teglari nima vazifani bajaradi?
+    base.html bilan alohida sahifa shabloni qanday bog‘lanadi?
+
+68. Shablonda {{ }} va {% %} belgilarining farqi nima?
+
+69. HTML formada {% csrf_token %} nima uchun kerak? Uni yozmasak, POST so‘rovi
+    yuborilganda nima bo‘ladi?
+
+70. Form yuborilganda is_valid() orqali tekshirib, to‘g‘ri bo‘lsa saqlaydigan
+    va boshqa sahifaga yo‘naltiradigan view kodini yozing.
+
+======================================================================
+O‘z-o‘zini baholash: 63–70 ta to‘g‘ri — a’lo, 49–62 — yaxshi,
+35–48 — qoniqarli, 35 dan kam — mavzularni qayta takrorlang.
+======================================================================
