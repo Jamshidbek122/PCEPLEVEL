@@ -1,0 +1,132 @@
+1. try-except konstruksiyasi nima uchun ishlatiladi?
+
+2. else bloki qachon ishlaydi?
+
+3. finally bloki qachon ishlaydi? Xato chiqmasa ham ishlaydimi?
+
+4. Quyidagi ikki yozuvning farqi nima?
+
+   except:
+   except ValueError:
+
+   Qaysi biri yaxshiroq va nima uchun?
+
+5. Bir nechta xato turini bitta except bilan qanday ushlash mumkin?
+   Misol yozing.
+
+6. raise kalit so'zi nima vazifani bajaradi?
+
+
+B) NATIJANI TOPING (7-12)
+-------------------------
+
+7. Dastur nima chiqaradi?
+
+   try:
+       print(10 / 2)
+   except ZeroDivisionError:
+       print("Xato")
+
+8. Dastur nima chiqaradi?
+
+   try:
+       print(10 / 0)
+   except ZeroDivisionError:
+       print("Xato")
+   print("Tugadi")
+
+9. Dastur nima chiqaradi?
+
+   try:
+       x = int("abc")
+   except ValueError:
+       print("A")
+   else:
+       print("B")
+   finally:
+       print("C")
+
+10. Dastur nima chiqaradi?
+
+    try:
+        x = int("25")
+    except ValueError:
+        print("A")
+    else:
+        print("B")
+    finally:
+        print("C")
+
+11. Dastur nima chiqaradi?
+
+    def f():
+        try:
+            return 1
+        finally:
+            print("finally")
+
+    print(f())
+
+12. Dastur nima chiqaradi?
+
+    try:
+        lst = [1, 2, 3]
+        print(lst[5])
+    except IndexError as e:
+        print("Xato:", e)
+
+
+C) XATONI TOPING VA TUZATING (13-16)
+------------------------------------
+
+13. Bu kodda nima xato?
+
+    try:
+    print("salom")
+    except:
+    print("xato")
+
+14. Bu kodda nima xato?
+
+    try
+        x = int("5")
+    except ValueError
+        print("xato")
+
+15. Bu kodda nima xato? (Maslahat: except tartibiga e'tibor bering.)
+
+    try:
+        x = 1 / 0
+    except Exception:
+        print("Umumiy xato")
+    except ZeroDivisionError:
+        print("Nolga bo'lish")
+
+16. Bu kodda nima xato? (Maslahat: else va except o'rni.)
+
+    try:
+        x = int("5")
+    else:
+        print("OK")
+    except ValueError:
+        print("Xato")
+
+
+D) KOD YOZING (17-20)
+---------------------
+
+17. Foydalanuvchidan son so'rang. Agar son kiritmasa (masalan, harf
+    kiritsa), "Iltimos, son kiriting!" deb chiqaring.
+
+18. Foydalanuvchidan ikkita son so'rab, birinchisini ikkinchisiga
+    bo'ling. ValueError va ZeroDivisionError ni alohida ushlang va
+    har biriga alohida xabar chiqaring.
+
+19. "data.txt" faylini ochib o'qing. Fayl topilmasa
+    (FileNotFoundError), "Fayl topilmadi" deb chiqaring. Fayl ochilgan
+    bo'lsa ham, bo'lmasa ham oxirida "Dastur tugadi" deb chiqaring.
+
+20. yosh_tekshir(yosh) nomli funksiya yozing. Yosh 0 dan kichik yoki
+    150 dan katta bo'lsa, raise yordamida ValueError chiqarsin.
+    Funksiyani try-except ichida chaqirib, xato xabarini ekranga
+    chiqaring.
