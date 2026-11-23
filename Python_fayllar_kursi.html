@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Python: fayllar bilan ishlash</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: chap tomonda darslar menyusi, o'ngda bitta dars kartochkasi; pastda Oldingi/Keyingi */
+:root{
+  --bg:#f3f5fa;
+  --surface:#ffffff;
+  --ink:#16213a;
+  --muted:#5b6782;
+  --line:#dde2ee;
+  --accent:#2f5fd0;        /* Python ko'k */
+  --accent-soft:#e6edff;
+  --sun:#ffcf3f;           /* Python sariq */
+  --sun-soft:#fff6d6;
+  --ok:#1f9d63; --ok-soft:#e2f6ec;
+  --bad:#d64545; --bad-soft:#fde8e8;
+  --code-bg:#121a2e; --code-ink:#e6ebf7;
+  --display:"Unbounded", "Segoe UI", system-ui, sans-serif;
+  --body:"Manrope", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1322; --surface:#151d31; --ink:#e8ecf7; --muted:#9aa6c2; --line:#26304a;
+    --accent:#7ea2ff; --accent-soft:#1d2a4d; --sun:#ffd65c; --sun-soft:#3a3218;
+    --ok:#4cc98d; --ok-soft:#173527; --bad:#ff7b7b; --bad-soft:#3d1c1f;
+    --code-bg:#0a0f1c; --code-ink:#e6ebf7; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1322; --surface:#151d31; --ink:#e8ecf7; --muted:#9aa6c2; --line:#26304a;
+  --accent:#7ea2ff; --accent-soft:#1d2a4d; --sun:#ffd65c; --sun-soft:#3a3218;
+  --ok:#4cc98d; --ok-soft:#173527; --bad:#ff7b7b; --bad-soft:#3d1c1f;
+  --code-bg:#0a0f1c; --code-ink:#e6ebf7; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.6}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:6px}
+
+.app{display:grid;grid-template-columns:290px 1fr;min-height:100vh}
+aside{background:var(--surface);border-right:1px solid var(--line);padding:22px 16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent) 50%,var(--sun) 50%);display:grid;place-items:center;font-family:var(--mono);font-weight:600;color:#fff;font-size:14px;flex:none}
+.brand h1{font-family:var(--display);font-size:15px;line-height:1.3;margin:0;font-weight:700}
+.brand small{color:var(--muted);font-size:12.5px}
+.prog{margin:6px 0 18px}
+.prog-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--sun));transition:width .4s}
+nav ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+nav button{width:100%;display:flex;gap:10px;align-items:center;text-align:left;background:none;border:0;padding:9px 10px;border-radius:10px;color:var(--ink);font-size:14.5px;font-weight:500}
+nav button:hover{background:var(--accent-soft)}
+nav button.active{background:var(--accent);color:#fff}
+nav .num{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--bg);font-family:var(--mono);font-size:12px;flex:none;color:var(--muted)}
+nav button.active .num{background:rgba(255,255,255,.2);color:#fff}
+nav button.done .num{background:var(--ok);color:#fff}
+.menu-btn{display:none}
+
+main{padding:34px clamp(16px,4vw,56px) 60px;max-width:980px;width:100%}
+.lesson{display:block}
+.js .lesson{display:none}
+.js .lesson.show{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:.3;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.js .lesson.show{animation:none}.bar i{transition:none}}
+
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12.5px;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:99px;margin-bottom:12px}
+.lesson h2{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);line-height:1.2;margin:0 0 10px;text-wrap:balance}
+.lead{font-size:18px;color:var(--muted);max-width:62ch;margin:0 0 26px}
+.lesson h3{font-family:var(--display);font-size:17px;margin:34px 0 12px;font-weight:500;display:flex;gap:10px;align-items:center}
+.lesson h3::before{content:"";width:6px;height:20px;background:var(--sun);border-radius:3px}
+p{max-width:68ch}
+
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h4{margin:0 0 6px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{display:inline-block;font-family:var(--mono);font-size:12.5px;background:var(--bg);border:1px solid var(--line);padding:1px 7px;border-radius:6px;margin:2px 2px 0 0;color:var(--ink)}
+.big-ico{font-family:var(--mono);font-size:22px;font-weight:600;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:10px}
+.ico-a{background:var(--accent-soft);color:var(--accent)}
+.ico-s{background:var(--sun-soft);color:#9a6b00}
+:root[data-theme="dark"] .ico-s{color:var(--sun)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ico-s{color:var(--sun)}}
+
+.flow{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin:8px 0}
+.step{flex:1 1 170px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative}
+.step b{display:block;font-family:var(--display);font-weight:500;font-size:15px;margin-bottom:4px}
+.step span{color:var(--muted);font-size:14.5px}
+.step .n{position:absolute;top:12px;right:14px;font-family:var(--mono);color:var(--accent);font-size:13px}
+.arrow{align-self:center;color:var(--muted);font-size:22px}
+
+code{font-family:var(--mono);font-size:.88em;background:var(--accent-soft);color:var(--ink);padding:1px 6px;border-radius:6px}
+.code{position:relative;background:var(--code-bg);border-radius:14px;margin:12px 0;overflow:hidden;border:1px solid #222c45}
+.code .bar-top{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;background:#3a4563}
+.dots i:first-child{background:#ff6b6b}.dots i:nth-child(2){background:var(--sun)}.dots i:nth-child(3){background:#4cc98d}
+.fname{font-family:var(--mono);font-size:12px;color:#8e9abb}
+.copy{background:rgba(255,255,255,.08);color:#dfe6f7;border:0;border-radius:8px;padding:4px 10px;font-size:12.5px}
+.copy:hover{background:rgba(255,255,255,.16)}
+.code pre{margin:0;padding:16px 18px;overflow-x:auto;color:var(--code-ink);font-family:var(--mono);font-size:14px;line-height:1.65}
+.code pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.out{background:#0b2a1e;border-top:1px dashed #2b5a45;padding:10px 18px;font-family:var(--mono);font-size:13.5px;color:#9ef0c4;white-space:pre-wrap}
+.out::before{content:"Natija ▸";display:block;color:#5fbf91;font-size:11.5px;margin-bottom:2px;letter-spacing:.04em}
+/* sintaksis ranglari */
+.token.comment{color:#7c89a8;font-style:italic}
+.token.string{color:#b5e48c}
+.token.keyword{color:#7ea2ff;font-weight:600}
+.token.builtin{color:#ffcf3f}
+.token.function{color:#7fdbff}
+.token.number,.token.boolean{color:#ffa07a}
+.token.operator,.token.punctuation{color:#c3cbe0}
+.token.decorator,.token.class-name{color:#ffcf3f}
+.token.interpolation-punctuation{color:#ff8fb1}
+
+.note{display:flex;gap:12px;border-radius:14px;padding:14px 16px;margin:14px 0;border:1px solid}
+.note .i{font-weight:700;font-family:var(--mono);flex:none;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px}
+.note p{margin:0}
+.note.warn{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 30%,transparent)}
+.note.warn .i{background:var(--bad);color:#fff}
+.note.tip{background:var(--sun-soft);border-color:color-mix(in srgb,var(--sun) 50%,transparent)}
+.note.tip .i{background:var(--sun);color:#3a2a00}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+
+/* tablar */
+.tabs{margin:12px 0}
+.tablist{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.tablist button{background:var(--surface);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:14px;font-weight:600;color:var(--muted)}
+.tablist button[aria-selected="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.js .tabpanel{display:none}
+.js .tabpanel.on{display:block}
+.tabpanel > p:first-child{margin-top:8px}
+
+/* interaktiv laboratoriya */
+.lab{background:var(--surface);border:2px solid var(--accent);border-radius:18px;padding:20px;margin:18px 0}
+.lab-h{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.lab-h b{font-family:var(--display);font-weight:500}
+.pill{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:#fff;padding:3px 8px;border-radius:6px}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+.seg button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:10px;padding:7px 14px;font-family:var(--mono);font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.lab label{font-size:13px;color:var(--muted);font-weight:600}
+.result{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;background:var(--bg);border-radius:14px;padding:14px}
+.result .badge{font-family:var(--mono);font-weight:700;font-size:13px;padding:6px 10px;border-radius:8px;white-space:nowrap}
+.badge.ok{background:var(--ok-soft);color:var(--ok)}
+.badge.bad{background:var(--bad-soft);color:var(--bad)}
+.files{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
+.file{flex:1 1 160px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font-family:var(--mono);font-size:13px}
+.file div{padding:4px 10px;border-bottom:1px solid var(--line);color:var(--muted);font-size:11.5px}
+.file pre{margin:0;padding:8px 10px;min-height:58px;white-space:pre-wrap}
+.file .new{background:var(--ok-soft);color:var(--ok)}
+.file .gone{color:var(--bad);text-decoration:line-through}
+
+.cursor-text{font-family:var(--mono);font-size:17px;background:var(--bg);border-radius:12px;padding:14px;line-height:2.1;word-break:break-all}
+.cursor-text span{padding:3px 1px;border-radius:3px}
+.cursor-text .rd{background:var(--sun-soft);color:var(--ink)}
+.cursor-text .nl{color:var(--muted);font-size:12px}
+.cursor-text .cur{box-shadow:-3px 0 0 var(--bad)}
+.cursor-text .end{display:inline-block;width:2px;height:1.2em;background:var(--bad);vertical-align:middle}
+.cur-info{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;font-family:var(--mono);font-size:14px}
+.cur-info div{background:var(--bg);border-radius:10px;padding:8px 12px}
+.cur-info b{color:var(--accent)}
+
+/* test */
+.quiz{background:linear-gradient(135deg,var(--accent-soft),var(--sun-soft));border-radius:18px;padding:20px;margin:30px 0 10px}
+.quiz .q{font-weight:700;font-size:16.5px;margin:4px 0 12px}
+.quiz .opts{display:grid;gap:8px}
+.quiz .opts button{text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--ink);font-size:15px}
+.quiz .opts button:hover:not(:disabled){border-color:var(--accent)}
+.quiz .opts button.right{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opts button.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.quiz .opts button:disabled{cursor:default}
+.quiz .fb{margin:10px 0 0;font-weight:600;min-height:1.4em}
+.quiz-label{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:36px;padding-top:20px;border-top:1px solid var(--line);flex-wrap:wrap}
+.pager button{border-radius:12px;padding:11px 18px;font-weight:700;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.pager .next{background:var(--accent);color:#fff;border-color:var(--accent)}
+.pager .done-btn{background:var(--ok);color:#fff;border-color:var(--ok)}
+.pager button:disabled{opacity:.4;cursor:default}
+
+.check{list-style:none;padding:0;display:grid;gap:8px}
+.check li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;gap:12px}
+.check li b{font-family:var(--mono);color:var(--accent)}
+.lvl{margin-left:auto;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;height:fit-content;white-space:nowrap}
+.l1{background:var(--ok-soft);color:var(--ok)}.l2{background:var(--sun-soft);color:#9a6b00}.l3{background:var(--bad-soft);color:var(--bad)}
+
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  aside{position:fixed;inset:0 auto 0 0;width:290px;z-index:20;transform:translateX(-100%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.2)}
+  aside.open{transform:none}
+  .menu-btn{display:inline-flex;gap:8px;align-items:center;position:sticky;top:10px;z-index:10;margin:12px 16px 0;background:var(--ink);color:var(--surface);border:0;border-radius:10px;padding:8px 14px;font-weight:700;font-size:14px}
+  main{padding-top:18px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside id="side">
+  <div class="brand">
+    <div class="logo">.py</div>
+    <div><h1>Fayllar bilan ishlash</h1><small>Python · 11 dars</small></div>
+  </div>
+  <div class="prog">
+    <div class="prog-top"><span>Progress</span><span id="progTxt">0 / 11</span></div>
+    <div class="bar"><i id="progBar"></i></div>
+  </div>
+  <nav><ol id="navList"></ol></nav>
+</aside>
+
+<div>
+<button class="menu-btn" id="menuBtn" aria-controls="side">☰ Darslar</button>
+<main id="main">
+
+<!-- 1 -->
+<section class="lesson" id="dars-1" data-title="Fayl nima?">
+  <div class="eyebrow">1-dars · 5 daqiqa</div>
+  <h2>Fayl nima va u bilan qanday ishlaymiz?</h2>
+  <p class="lead">Fayl diskda saqlanadigan ma'lumot. Dastur yopilsa ham u o'chib ketmaydi. Python'da har qanday fayl bilan ishlash 3 qadamdan iborat.</p>
+  <div class="flow">
+    <div class="step"><span class="n">01</span><b>Ochish</b><span><code>open("fayl.txt")</code></span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">02</span><b>O'qish / yozish</b><span><code>f.read()</code>, <code>f.write()</code></span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">03</span><b>Yopish</b><span><code>f.close()</code> yoki <code>with</code> o'zi yopadi</span></div>
+  </div>
+
+  <h3>Fayllarning 2 turi</h3>
+  <div class="grid">
+    <div class="card"><div class="big-ico ico-a">Aa</div><h4>Matnli fayllar</h4><p>Ichini Bloknotda o'qish mumkin. Python ularni <code>str</code> sifatida o'qiydi.</p><p style="margin-top:8px"><span class="tag">.txt</span><span class="tag">.csv</span><span class="tag">.json</span><span class="tag">.py</span><span class="tag">.html</span></p></div>
+    <div class="card"><div class="big-ico ico-s">01</div><h4>Binar fayllar</h4><p>Ichi baytlardan iborat. Python ularni <code>bytes</code> sifatida o'qiydi yoki maxsus kutubxona ishlatadi.</p><p style="margin-top:8px"><span class="tag">.jpg</span><span class="tag">.pdf</span><span class="tag">.docx</span><span class="tag">.xlsx</span><span class="tag">.mp3</span></p></div>
+  </div>
+
+  <h3>Yo'l (path): fayl qayerda turibdi?</h3>
+  <div class="grid">
+    <div class="card"><h4>Nisbiy yo'l</h4><p>Dastur ishga tushgan papkadan hisoblanadi.</p><p style="margin-top:8px"><code>"data.txt"</code><br><code>"papka/data.txt"</code></p></div>
+    <div class="card"><h4>Mutlaq yo'l</h4><p>Diskning boshidan to'liq manzil.</p><p style="margin-top:8px"><code>"C:/Users/Ali/data.txt"</code><br><code>"/home/ali/data.txt"</code></p></div>
+  </div>
+  <div class="note warn"><span class="i">!</span><p>Windows'da <code>"C:\new\test.txt"</code> deb yozsangiz, <code>\n</code> yangi qatorga, <code>\t</code> esa tabga aylanib qoladi. Shuning uchun yo'lni to'g'ri yozing:</p></div>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">yol1 = "C:/new/test.txt"       # oddiy slash (eng oson)
+yol2 = r"C:\new\test.txt"      # r = raw string
+yol3 = "C:\\new\\test.txt"     # ikkitalik backslash</code></pre></div>
+
+  <div class="quiz" data-answer="b"><div class="quiz-label">Mini-test</div><p class="q">Quyidagilardan qaysi biri binar fayl?</p><div class="opts"><button data-k="a">baholar.csv</button><button data-k="b">rasm.png</button><button data-k="c">sozlama.json</button></div><p class="fb" data-ok="To'g'ri! Rasm baytlardan iborat, uni Bloknotda o'qib bo'lmaydi." data-no="Yo'q, CSV va JSON matnli fayllar. To'g'ri javob: rasm.png"></p></div>
+</section>
+
+<!-- 2 -->
+<section class="lesson" id="dars-2" data-title="open() va rejimlar">
+  <div class="eyebrow">2-dars · 7 daqiqa</div>
+  <h2>open() funksiyasi va rejimlar</h2>
+  <p class="lead">Faylni ochganda unga nima qilmoqchi ekaningizni rejim orqali aytasiz: o'qish, yozish yoki qo'shish.</p>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">open("fayl_nomi.txt", "rejim", encoding="utf-8")</code></pre></div>
+
+  <div class="lab" id="modeLab">
+    <div class="lab-h"><span class="pill">Sinab ko'ring</span><b>Rejimlar laboratoriyasi</b></div>
+    <label>Rejimni tanlang</label>
+    <div class="seg" id="modeSeg"><button aria-pressed="true" data-m="r">"r"</button><button aria-pressed="false" data-m="w">"w"</button><button aria-pressed="false" data-m="a">"a"</button><button aria-pressed="false" data-m="x">"x"</button><button aria-pressed="false" data-m="r+">"r+"</button></div>
+    <label>Fayl oldindan bormi?</label>
+    <div class="seg" id="existSeg"><button aria-pressed="true" data-e="1">Ha, bor</button><button aria-pressed="false" data-e="0">Yo'q</button></div>
+    <div class="result" id="modeResult"></div>
+  </div>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Rejim</th><th>Nima qiladi</th><th>Esda tuting</th></tr></thead>
+    <tbody>
+      <tr><td><code>"r"</code></td><td>O'qish (standart)</td><td>Fayl yo'q bo'lsa xato beradi</td></tr>
+      <tr><td><code>"w"</code></td><td>Yozish</td><td><b>Eski ma'lumotni o'chiradi!</b></td></tr>
+      <tr><td><code>"a"</code></td><td>Oxiriga qo'shish</td><td>Eski ma'lumot saqlanadi</td></tr>
+      <tr><td><code>"x"</code></td><td>Faqat yangi fayl yaratish</td><td>Fayl bor bo'lsa xato beradi</td></tr>
+      <tr><td><code>"b"</code></td><td>Binar (<code>"rb"</code>, <code>"wb"</code>)</td><td>Rasm, PDF va hokazolar uchun</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>with: fayl o'zi yopiladi</h3>
+  <div class="tabs">
+    <div class="tablist"><button aria-selected="false">Eski usul</button><button aria-selected="true">To'g'ri usul</button></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">f = open("salom.txt", "w", encoding="utf-8")
+f.write("Salom, dunyo!")
+f.close()   # unutsangiz, ma'lumot yozilmay qolishi mumkin</code></pre></div></div>
+    <div class="tabpanel on"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("salom.txt", "w", encoding="utf-8") as f:
+    f.write("Salom, dunyo!")
+# blokdan chiqqanda fayl avtomatik yopildi
+print(f.closed)</code></pre><div class="out">True</div></div></div>
+  </div>
+  <div class="note tip"><span class="i">★</span><p>O'zbekcha harflar (o', g'), kirill yozuvi to'g'ri chiqishi uchun matnli fayllarda doim <code>encoding="utf-8"</code> yozing.</p></div>
+
+  <div class="quiz" data-answer="c"><div class="quiz-label">Mini-test</div><p class="q">log.txt faylida 100 qator bor. Yana bitta qator qo'shmoqchisiz. Qaysi rejim kerak?</p><div class="opts"><button data-k="a">"w"</button><button data-k="b">"r"</button><button data-k="c">"a"</button></div><p class="fb" data-ok="Ofarin! &quot;a&quot; rejimi eskisini saqlab, oxiriga qo'shadi." data-no="Ehtiyot bo'ling: &quot;w&quot; 100 qatorni o'chirib yuboradi. To'g'ri javob: &quot;a&quot;"></p></div>
+</section>
+
+<!-- 3 -->
+<section class="lesson" id="dars-3" data-title="TXT fayllar">
+  <div class="eyebrow">3-dars · 10 daqiqa</div>
+  <h2>TXT: yozish va o'qish</h2>
+  <p class="lead">Eng oddiy format. Shu darsni tushunsangiz, qolgan formatlar ham oson bo'ladi.</p>
+
+  <h3>Yozish</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">yozish.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("mevalar.txt", "w", encoding="utf-8") as f:
+    f.write("olma\n")       # \n yangi qator, o'zi qo'shilmaydi!
+    f.write("nok\n")
+    f.writelines(["uzum\n", "anor\n"])   # ro'yxatni yozadi
+    print("shaftoli", file=f)            # print ham yoza oladi</code></pre></div>
+
+  <h3>O'qishning 4 usuli</h3>
+  <div class="tabs">
+    <div class="tablist"><button aria-selected="true">read()</button><button aria-selected="false">readline()</button><button aria-selected="false">readlines()</button><button aria-selected="false">for tsikli</button></div>
+    <div class="tabpanel on"><p>Butun faylni <b>bitta satr</b> qilib o'qiydi. Kichik fayllar uchun qulay.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("mevalar.txt", encoding="utf-8") as f:
+    matn = f.read()
+print(matn)</code></pre><div class="out">olma
+nok
+uzum
+anor
+shaftoli</div></div></div>
+    <div class="tabpanel"><p>Har chaqirilganda <b>bitta navbatdagi qatorni</b> beradi.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("mevalar.txt", encoding="utf-8") as f:
+    print(repr(f.readline()))
+    print(repr(f.readline()))</code></pre><div class="out">'olma\n'
+'nok\n'</div></div></div>
+    <div class="tabpanel"><p>Barcha qatorlarni <b>ro'yxat</b> qilib beradi. Indeks bilan ishlash qulay.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("mevalar.txt", encoding="utf-8") as f:
+    qatorlar = f.readlines()
+print(qatorlar)
+print(qatorlar[2].strip())</code></pre><div class="out">['olma\n', 'nok\n', 'uzum\n', 'anor\n', 'shaftoli\n']
+uzum</div></div></div>
+    <div class="tabpanel"><p>Qatorma-qator o'qiydi. <b>Katta fayllar uchun eng yaxshi usul</b>, chunki xotirani tejaydi.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("mevalar.txt", encoding="utf-8") as f:
+    for raqam, qator in enumerate(f, start=1):
+        print(raqam, qator.strip())   # strip() \n ni olib tashlaydi</code></pre><div class="out">1 olma
+2 nok
+3 uzum
+4 anor
+5 shaftoli</div></div></div>
+  </div>
+  <div class="note tip"><span class="i">★</span><p>Toza ro'yxat kerak bo'lsa: <code>f.read().splitlines()</code> natijasi <code>['olma', 'nok', ...]</code> bo'ladi, <code>\n</code> belgilarisiz.</p></div>
+
+  <h3>Hayotiy misol: kundalik (log) yozish</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">log.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">from datetime import datetime
+
+def log_yoz(xabar):
+    with open("log.txt", "a", encoding="utf-8") as f:
+        vaqt = datetime.now().strftime("%H:%M:%S")
+        f.write(f"[{vaqt}] {xabar}\n")
+
+log_yoz("Dastur ishga tushdi")
+log_yoz("Foydalanuvchi kirdi")</code></pre><div class="out">log.txt ichida:
+[22:10:01] Dastur ishga tushdi
+[22:10:01] Foydalanuvchi kirdi</div></div>
+
+  <div class="quiz" data-answer="a"><div class="quiz-label">Mini-test</div><p class="q">2 GB lik log faylni o'qish kerak. Qaysi usul eng to'g'ri?</p><div class="opts"><button data-k="a">for qator in f:</button><button data-k="b">f.read()</button><button data-k="c">f.readlines()</button></div><p class="fb" data-ok="Zo'r! for tsikli faylni bo'laklab o'qiydi, xotira to'lib qolmaydi." data-no="read() va readlines() butun 2 GB ni xotiraga yuklaydi. To'g'ri javob: for qator in f"></p></div>
+</section>
+
+<!-- 4 -->
+<section class="lesson" id="dars-4" data-title="Kursor va binar fayllar">
+  <div class="eyebrow">4-dars · 7 daqiqa</div>
+  <h2>Fayl kursori va binar fayllar</h2>
+  <p class="lead">Faylda ko'rinmas kursor bor. Har bir o'qishdan keyin u oldinga suriladi. Shuning uchun <code>read()</code> ni ikkinchi marta chaqirsangiz, bo'sh satr qaytadi.</p>
+
+  <div class="lab">
+    <div class="lab-h"><span class="pill">Sinab ko'ring</span><b>Kursor qanday yuradi?</b></div>
+    <div class="seg" id="curBtns"><button data-a="read4">f.read(4)</button><button data-a="readline">f.readline()</button><button data-a="read">f.read()</button><button data-a="seek0">f.seek(0)</button></div>
+    <div class="cursor-text" id="curText"></div>
+    <div class="cur-info"><div>f.tell() = <b id="curPos">0</b></div><div>Qaytgan qiymat: <b id="curRet">—</b></div></div>
+  </div>
+
+  <h3>Binar fayllar: "rb" va "wb"</h3>
+  <p>Rasm, video, PDF matn emas, baytlardan iborat. Ular uchun <code>"b"</code> rejimi ishlatiladi va <b>encoding yozilmaydi</b>.</p>
+  <div class="tabs">
+    <div class="tablist"><button aria-selected="true">Rasmni nusxalash</button><button aria-selected="false">Katta faylni bo'laklab</button><button aria-selected="false">Fayl turini aniqlash</button></div>
+    <div class="tabpanel on"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("rasm.jpg", "rb") as manba:
+    malumot = manba.read()          # bytes turi
+
+with open("rasm_nusxa.jpg", "wb") as nusxa:
+    nusxa.write(malumot)</code></pre></div></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">BOLAK = 1024 * 1024   # 1 MB
+
+with open("kino.mp4", "rb") as manba, open("nusxa.mp4", "wb") as nusxa:
+    while True:
+        bolak = manba.read(BOLAK)
+        if not bolak:      # fayl tugadi
+            break
+        nusxa.write(bolak)</code></pre></div></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">with open("nomalum_fayl", "rb") as f:
+    bosh = f.read(4)
+
+if bosh.startswith(b"\x89PNG"):
+    print("Bu PNG rasm")
+elif bosh.startswith(b"%PDF"):
+    print("Bu PDF fayl")
+elif bosh.startswith(b"PK"):
+    print("Bu ZIP (.docx va .xlsx ham aslida ZIP)")</code></pre></div></div>
+  </div>
+
+  <div class="quiz" data-answer="b"><div class="quiz-label">Mini-test</div><p class="q">f.read() dan keyin yana f.read() chaqirildi. Nima qaytadi?</p><div class="opts"><button data-k="a">Butun matn yana bir marta</button><button data-k="b">Bo'sh satr ''</button><button data-k="c">Xato chiqadi</button></div><p class="fb" data-ok="To'g'ri! Kursor oxirida turibdi. Qayta o'qish uchun f.seek(0) kerak." data-no="Xato chiqmaydi, lekin kursor oxirida turgani uchun bo'sh satr '' qaytadi."></p></div>
+</section>
+
+<!-- 5 -->
+<section class="lesson" id="dars-5" data-title="CSV fayllar">
+  <div class="eyebrow">5-dars · 10 daqiqa</div>
+  <h2>CSV: jadvallar bilan ishlash</h2>
+  <p class="lead">CSV bu vergul bilan ajratilgan jadval. Excel uni bemalol ochadi. Python'da buning uchun tayyor <code>csv</code> moduli bor.</p>
+
+  <div class="grid">
+    <div class="card"><h4>talabalar.csv (fayl ichi)</h4><pre style="font-family:var(--mono);font-size:13.5px;margin:8px 0 0;white-space:pre-wrap">ism,yosh,shahar,ball
+Ali,20,Toshkent,85
+Malika,19,Samarqand,92
+Jasur,21,Buxoro,78</pre></div>
+    <div class="card"><h4>Excel'da ko'rinishi</h4><div class="tbl" style="margin:8px 0 0"><table><thead><tr><th>ism</th><th>yosh</th><th>shahar</th><th>ball</th></tr></thead><tbody><tr><td>Ali</td><td>20</td><td>Toshkent</td><td>85</td></tr><tr><td>Malika</td><td>19</td><td>Samarqand</td><td>92</td></tr><tr><td>Jasur</td><td>21</td><td>Buxoro</td><td>78</td></tr></tbody></table></div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tablist"><button aria-selected="true">writer: yozish</button><button aria-selected="false">reader: o'qish</button><button aria-selected="false">DictReader</button><button aria-selected="false">DictWriter</button></div>
+    <div class="tabpanel on"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import csv
+
+talabalar = [
+    ["ism", "yosh", "shahar", "ball"],
+    ["Ali", 20, "Toshkent", 85],
+    ["Malika", 19, "Samarqand", 92],
+    ["Jasur", 21, "Buxoro", 78],
+]
+
+with open("talabalar.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerows(talabalar)       # hammasini birdan
+    # writer.writerow([...])          # bitta qator</code></pre></div></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import csv
+
+with open("talabalar.csv", newline="", encoding="utf-8") as f:
+    reader = csv.reader(f)
+    sarlavha = next(reader)           # sarlavha qatorini o'tkazib yuboramiz
+    for ism, yosh, shahar, ball in reader:
+        print(f"{ism} ({shahar}): {ball} ball")</code></pre><div class="out">Ali (Toshkent): 85 ball
+Malika (Samarqand): 92 ball
+Jasur (Buxoro): 78 ball</div></div></div>
+    <div class="tabpanel"><p>Indeks o'rniga <b>ustun nomi</b> bilan ishlaysiz: <code>qator["ball"]</code>.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import csv
+
+with open("talabalar.csv", newline="", encoding="utf-8") as f:
+    talabalar = list(csv.DictReader(f))
+
+ballar = [int(t["ball"]) for t in talabalar]
+print("O'rtacha:", round(sum(ballar) / len(ballar), 1))
+eng_yaxshi = max(talabalar, key=lambda t: int(t["ball"]))
+print("Eng yaxshi:", eng_yaxshi["ism"])</code></pre><div class="out">O'rtacha: 85.0
+Eng yaxshi: Malika</div></div></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import csv
+
+mahsulotlar = [
+    {"nomi": "Non", "narx": 4000, "soni": 3},
+    {"nomi": "Sut", "narx": 12000, "soni": 1},
+]
+
+with open("mahsulotlar.csv", "w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["nomi", "narx", "soni"])
+    writer.writeheader()              # sarlavha qatori
+    writer.writerows(mahsulotlar)</code></pre></div></div>
+  </div>
+
+  <div class="grid">
+    <div class="note warn" style="margin:0"><span class="i">!</span><p>CSV'dan o'qilgan har bir qiymat <b>satr</b> bo'ladi. Hisoblash uchun <code>int()</code> yoki <code>float()</code> bilan o'giring.</p></div>
+    <div class="note tip" style="margin:0"><span class="i">★</span><p>Doim <code>newline=""</code> yozing. Excel o'zbekcha harflarni to'g'ri ko'rsatishi uchun <code>encoding="utf-8-sig"</code> ishlating.</p></div>
+  </div>
+
+  <div class="quiz" data-answer="c"><div class="quiz-label">Mini-test</div><p class="q">Faylda ajratuvchi vergul emas, nuqtali vergul (;). Qanday o'qiysiz?</p><div class="opts"><button data-k="a">qator.split(";")</button><button data-k="b">csv.reader(f, sep=";")</button><button data-k="c">csv.reader(f, delimiter=";")</button></div><p class="fb" data-ok="To'g'ri! delimiter parametri ajratuvchini belgilaydi." data-no="csv modulida parametr nomi delimiter. To'g'ri javob: csv.reader(f, delimiter=&quot;;&quot;)"></p></div>
+</section>
+
+<!-- 6 -->
+<section class="lesson" id="dars-6" data-title="JSON fayllar">
+  <div class="eyebrow">6-dars · 8 daqiqa</div>
+  <h2>JSON: lug'at va ro'yxatlarni saqlash</h2>
+  <p class="lead">JSON sozlamalar, API javoblari va kichik ma'lumotlar bazasi uchun eng ko'p ishlatiladigan format. U Python'dagi <code>dict</code> va <code>list</code> ga juda o'xshaydi.</p>
+
+  <div class="grid">
+    <div class="card"><div class="big-ico ico-a">↓</div><h4>Fayl bilan</h4><p><code>json.dump(obj, f)</code> faylga yozadi<br><code>json.load(f)</code> fayldan o'qiydi</p></div>
+    <div class="card"><div class="big-ico ico-s">s</div><h4>Satr bilan (s = string)</h4><p><code>json.dumps(obj)</code> satrga aylantiradi<br><code>json.loads(satr)</code> satrdan o'qiydi</p></div>
+  </div>
+
+  <h3>Yozish va o'qish</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">json_misol.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">import json
+
+user = {
+    "ism": "G'ayrat",
+    "yosh": 25,
+    "tillar": ["Python", "JavaScript"],
+    "manzil": {"shahar": "Toshkent"},
+}
+
+with open("user.json", "w", encoding="utf-8") as f:
+    json.dump(user, f, ensure_ascii=False, indent=4)
+
+with open("user.json", encoding="utf-8") as f:
+    data = json.load(f)
+
+print(data["tillar"][0], data["manzil"]["shahar"])</code></pre><div class="out">Python Toshkent</div></div>
+  <div class="grid">
+    <div class="card"><h4><code>ensure_ascii=False</code></h4><p>O'zbek va rus harflari <code>\u0413</code> kabi kodlarga aylanmaydi.</p></div>
+    <div class="card"><h4><code>indent=4</code></h4><p>Fayl chiroyli, o'qishga qulay formatda yoziladi.</p></div>
+  </div>
+
+  <h3>Python va JSON turlari</h3>
+  <div class="tbl"><table><thead><tr><th>Python</th><th>JSON</th></tr></thead><tbody>
+    <tr><td><code>dict</code></td><td>object <code>{}</code></td></tr>
+    <tr><td><code>list</code>, <code>tuple</code></td><td>array <code>[]</code></td></tr>
+    <tr><td><code>True</code> / <code>False</code> / <code>None</code></td><td><code>true</code> / <code>false</code> / <code>null</code></td></tr>
+    <tr><td><code>set</code>, <code>datetime</code></td><td>Yozib bo'lmaydi, avval <code>list</code> yoki <code>str</code> ga o'giring</td></tr>
+  </tbody></table></div>
+
+  <h3>Mini-loyiha: kontaktlar daftari</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">kontaktlar.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">import json, os
+
+FAYL = "kontaktlar.json"
+
+def yuklash():
+    if not os.path.exists(FAYL):
+        return []
+    with open(FAYL, encoding="utf-8") as f:
+        return json.load(f)
+
+def saqlash(kontaktlar):
+    with open(FAYL, "w", encoding="utf-8") as f:
+        json.dump(kontaktlar, f, ensure_ascii=False, indent=2)
+
+kontaktlar = yuklash()
+kontaktlar.append({"ism": "Sardor", "tel": "+998901234567"})
+saqlash(kontaktlar)
+print("Jami:", len(kontaktlar))</code></pre><div class="out">Jami: 1     (har ishga tushirganda 1 taga ko'payadi)</div></div>
+
+  <div class="quiz" data-answer="a"><div class="quiz-label">Mini-test</div><p class="q">Faylga yozish uchun qaysi funksiya kerak?</p><div class="opts"><button data-k="a">json.dump(data, f)</button><button data-k="b">json.loads(f)</button><button data-k="c">json.dumps(data, f)</button></div><p class="fb" data-ok="To'g'ri! dump faylga yozadi, s harfi bor dumps esa satr qaytaradi." data-no="Faylga yozish uchun s harfisiz json.dump(data, f) ishlatiladi."></p></div>
+</section>
+
+<!-- 7 -->
+<section class="lesson" id="dars-7" data-title="Papkalar: pathlib, os">
+  <div class="eyebrow">7-dars · 8 daqiqa</div>
+  <h2>Fayl va papkalarni boshqarish</h2>
+  <p class="lead">Faylning ichi bilan emas, o'zi bilan ishlash: yaratish, o'chirish, nomini o'zgartirish, qidirish. Zamonaviy usul <code>pathlib</code>.</p>
+
+  <div class="tbl"><table><thead><tr><th>Vazifa</th><th>pathlib (tavsiya)</th><th>os / shutil</th></tr></thead><tbody>
+    <tr><td>Fayl bormi?</td><td><code>p.exists()</code></td><td><code>os.path.exists(yol)</code></td></tr>
+    <tr><td>Papka yaratish</td><td><code>p.mkdir(parents=True, exist_ok=True)</code></td><td><code>os.makedirs(yol, exist_ok=True)</code></td></tr>
+    <tr><td>Faylni o'chirish</td><td><code>p.unlink()</code></td><td><code>os.remove(yol)</code></td></tr>
+    <tr><td>To'la papkani o'chirish</td><td>—</td><td><code>shutil.rmtree(yol)</code></td></tr>
+    <tr><td>Nomini o'zgartirish</td><td><code>p.rename("yangi.txt")</code></td><td><code>os.rename(eski, yangi)</code></td></tr>
+    <tr><td>Papka ichidagilar</td><td><code>p.iterdir()</code></td><td><code>os.listdir(yol)</code></td></tr>
+    <tr><td>Nusxalash / ko'chirish</td><td>—</td><td><code>shutil.copy()</code> / <code>shutil.move()</code></td></tr>
+  </tbody></table></div>
+  <div class="note warn"><span class="i">!</span><p><code>unlink()</code>, <code>os.remove()</code> va <code>shutil.rmtree()</code> faylni Korzinkaga emas, <b>butunlay</b> o'chiradi.</p></div>
+
+  <h3>pathlib bilan tanishuv</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">from pathlib import Path
+
+p = Path("hujjatlar") / "2026" / "hisobot.txt"
+print(p.name, p.stem, p.suffix, p.parent)
+
+p.parent.mkdir(parents=True, exist_ok=True)
+p.write_text("Salom!", encoding="utf-8")     # open() siz yozish
+print(p.read_text(encoding="utf-8"))         # open() siz o'qish
+
+for fayl in Path(".").glob("*.txt"):          # barcha .txt fayllar
+    print(fayl)</code></pre><div class="out">hisobot.txt hisobot .txt hujjatlar/2026
+Salom!
+mevalar.txt
+log.txt</div></div>
+
+  <h3>Hayotiy misol: Yuklamalar papkasini tartiblash</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">tartibla.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">from pathlib import Path
+import shutil
+
+PAPKA = Path.home() / "Downloads"
+TURLAR = {
+    "Rasmlar": [".jpg", ".jpeg", ".png"],
+    "Hujjatlar": [".pdf", ".docx", ".txt", ".xlsx"],
+    "Videolar": [".mp4", ".mkv"],
+}
+
+for fayl in PAPKA.iterdir():
+    if not fayl.is_file():
+        continue
+    for nom, kengaytmalar in TURLAR.items():
+        if fayl.suffix.lower() in kengaytmalar:
+            manzil = PAPKA / nom
+            manzil.mkdir(exist_ok=True)
+            shutil.move(str(fayl), str(manzil / fayl.name))
+            print(fayl.name, "→", nom)
+            break</code></pre></div>
+
+  <div class="quiz" data-answer="b"><div class="quiz-label">Mini-test</div><p class="q">Path("a") / "b" / "c.txt" nima qaytaradi?</p><div class="opts"><button data-k="a">Xato, yo'llarni bo'lib bo'lmaydi</button><button data-k="b">a/b/c.txt yo'li</button><button data-k="c">Son</button></div><p class="fb" data-ok="To'g'ri! pathlib'da / belgisi yo'llarni birlashtiradi." data-no="pathlib'da / bo'lish emas, yo'llarni birlashtirish. Natija: a/b/c.txt"></p></div>
+</section>
+
+<!-- 8 -->
+<section class="lesson" id="dars-8" data-title="Xatolarni ushlash">
+  <div class="eyebrow">8-dars · 6 daqiqa</div>
+  <h2>Xatolarni ushlash: try / except</h2>
+  <p class="lead">Fayl topilmasligi, ruxsat yo'qligi yoki kodlash mos kelmasligi mumkin. Yaxshi dastur bunday paytda qulab tushmaydi, tushunarli xabar chiqaradi.</p>
+
+  <div class="grid">
+    <div class="card"><h4><code>FileNotFoundError</code></h4><p>Fayl yoki papka mavjud emas.</p></div>
+    <div class="card"><h4><code>PermissionError</code></h4><p>Ruxsat yo'q yoki fayl Excel kabi boshqa dasturda ochiq.</p></div>
+    <div class="card"><h4><code>FileExistsError</code></h4><p><code>"x"</code> rejimida fayl allaqachon bor.</p></div>
+    <div class="card"><h4><code>UnicodeDecodeError</code></h4><p>Fayl boshqa kodlashda (masalan <code>cp1251</code>) saqlangan.</p></div>
+    <div class="card"><h4><code>IsADirectoryError</code></h4><p>Fayl o'rniga papkani ochmoqchi bo'ldingiz.</p></div>
+    <div class="card"><h4><code>json.JSONDecodeError</code></h4><p>JSON fayl buzilgan yoki bo'sh.</p></div>
+  </div>
+
+  <h3>To'liq namuna</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">def faylni_oqi(yol):
+    try:
+        with open(yol, encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        print(f"'{yol}' fayli topilmadi.")
+    except PermissionError:
+        print(f"'{yol}' ni ochishga ruxsat yo'q.")
+    except UnicodeDecodeError:
+        with open(yol, encoding="cp1251") as f:
+            return f.read()
+    finally:
+        print("Urinish tugadi.")      # har doim ishlaydi
+
+faylni_oqi("yoq_fayl.txt")</code></pre><div class="out">'yoq_fayl.txt' fayli topilmadi.
+Urinish tugadi.</div></div>
+  <div class="note tip"><span class="i">★</span><p>Bo'sh <code>except:</code> bilan hamma xatoni bir joyda yutib yubormang. Aniq xato turini yozsangiz, muammoni topish oson bo'ladi.</p></div>
+
+  <div class="quiz" data-answer="c"><div class="quiz-label">Mini-test</div><p class="q">finally bloki qachon ishlaydi?</p><div class="opts"><button data-k="a">Faqat xato chiqqanda</button><button data-k="b">Faqat xato chiqmaganda</button><button data-k="c">Har doim</button></div><p class="fb" data-ok="To'g'ri! finally xato bo'lsa ham, bo'lmasa ham ishlaydi." data-no="finally har doim ishlaydi. Xato chiqmaganda ishlaydigan blok bu else."></p></div>
+</section>
+
+<!-- 9 -->
+<section class="lesson" id="dars-9" data-title="Excel, Word, PDF, ZIP">
+  <div class="eyebrow">9-dars · 12 daqiqa</div>
+  <h2>Excel, Word, PDF, pickle va ZIP</h2>
+  <p class="lead">Bu formatlar binar, oddiy <code>open()</code> yetmaydi. Kutubxonalarni terminalda bir marta o'rnatib olasiz:</p>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">terminal</span><button class="copy">Nusxalash</button></div><pre><code class="language-bash">pip install openpyxl pandas python-docx pypdf reportlab</code></pre></div>
+
+  <div class="tabs">
+    <div class="tablist"><button aria-selected="true">Excel</button><button aria-selected="false">pandas</button><button aria-selected="false">Word</button><button aria-selected="false">PDF o'qish</button><button aria-selected="false">PDF yaratish</button><button aria-selected="false">pickle</button><button aria-selected="false">ZIP</button></div>
+    <div class="tabpanel on"><p>Kutubxona: <code>openpyxl</code>. Excel formulalarini ham yozish mumkin.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">from openpyxl import Workbook, load_workbook
+
+wb = Workbook()
+ws = wb.active
+ws.title = "Talabalar"
+ws.append(["Ism", "Yosh", "Ball"])
+ws.append(["Ali", 20, 85])
+ws.append(["Malika", 19, 92])
+ws["E1"] = "=AVERAGE(C2:C3)"     # Excel formulasi
+wb.save("talabalar.xlsx")
+
+wb = load_workbook("talabalar.xlsx")
+for ism, yosh, ball in wb["Talabalar"].iter_rows(min_row=2, max_col=3, values_only=True):
+    print(ism, ball)</code></pre><div class="out">Ali 85
+Malika 92</div></div></div>
+    <div class="tabpanel"><p><code>pandas</code> jadvallar bilan ishlashning eng qisqa yo'li: CSV va Excel'ni bir qatorda o'qiydi va yozadi.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import pandas as pd
+
+df = pd.read_csv("talabalar.csv")
+print(df["ball"].mean())
+
+yaxshilar = df[df["ball"] &gt;= 80]
+yaxshilar.to_excel("yaxshilar.xlsx", index=False)   # CSV → Excel
+
+df2 = pd.read_excel("yaxshilar.xlsx")
+df2.to_csv("nusxa.csv", index=False)                # Excel → CSV</code></pre></div></div>
+    <div class="tabpanel"><p>Kutubxona: <code>python-docx</code>, lekin import nomi <code>docx</code>.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">from docx import Document
+
+doc = Document()
+doc.add_heading("Oylik hisobot", level=1)
+p = doc.add_paragraph("Bu hisobot ")
+p.add_run("Python").bold = True
+p.add_run(" yordamida yaratildi.")
+doc.add_paragraph("Birinchi band", style="List Bullet")
+
+jadval = doc.add_table(rows=1, cols=2)
+jadval.style = "Table Grid"
+jadval.rows[0].cells[0].text = "Ism"
+jadval.rows[0].cells[1].text = "Ball"
+for ism, ball in [("Ali", 85), ("Malika", 92)]:
+    qator = jadval.add_row().cells
+    qator[0].text, qator[1].text = ism, str(ball)
+doc.save("hisobot.docx")
+
+# O'qish
+for paragraf in Document("hisobot.docx").paragraphs:
+    print(paragraf.text)</code></pre></div></div>
+    <div class="tabpanel"><p>Kutubxona: <code>pypdf</code>. Matnni o'qish, sahifalarni ajratish va PDF'larni birlashtirish.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">from pypdf import PdfReader, PdfWriter
+
+reader = PdfReader("kitob.pdf")
+print("Sahifalar:", len(reader.pages))
+print(reader.pages[0].extract_text())
+
+# 1-3 sahifalarni ajratish
+writer = PdfWriter()
+for sahifa in reader.pages[0:3]:
+    writer.add_page(sahifa)
+with open("birinchi_3.pdf", "wb") as f:
+    writer.write(f)
+
+# Bir nechta PDF'ni birlashtirish
+writer = PdfWriter()
+for nom in ["a.pdf", "b.pdf"]:
+    writer.append(nom)
+with open("birlashgan.pdf", "wb") as f:
+    writer.write(f)</code></pre></div><div class="note tip"><span class="i">★</span><p>Skanerlangan (rasm ko'rinishidagi) PDF'dan matn chiqmaydi. Buning uchun OCR, masalan <code>pytesseract</code> kerak.</p></div></div>
+    <div class="tabpanel"><p>Kutubxona: <code>reportlab</code>. Noldan PDF chizadi, masalan sertifikat.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+c = canvas.Canvas("sertifikat.pdf", pagesize=A4)
+w, h = A4
+c.setFont("Helvetica-Bold", 28)
+c.drawCentredString(w / 2, h - 150, "SERTIFIKAT")
+c.setFont("Helvetica", 16)
+c.drawCentredString(w / 2, h - 200, "Ali Valiyev Python kursini tamomladi")
+c.save()</code></pre></div></div>
+    <div class="tabpanel"><p><code>pickle</code> har qanday Python obyektini, masalan <code>set</code> ni ham, to'g'ridan-to'g'ri saqlaydi.</p><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import pickle
+
+malumot = {"ballar": {85, 92, 78}, "faol": True}
+
+with open("malumot.pkl", "wb") as f:
+    pickle.dump(malumot, f)
+
+with open("malumot.pkl", "rb") as f:
+    print(pickle.load(f))</code></pre></div><div class="note warn"><span class="i">!</span><p>Notanish manbadan kelgan <code>.pkl</code> faylni ochmang: u ichidagi zararli kodni bajarishi mumkin.</p></div></div>
+    <div class="tabpanel"><div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><button class="copy">Nusxalash</button></div><pre><code class="language-python">import zipfile
+
+with zipfile.ZipFile("arxiv.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    z.write("talabalar.csv")
+    z.write("user.json")
+
+with zipfile.ZipFile("arxiv.zip") as z:
+    print(z.namelist())
+    z.extractall("ochilgan")</code></pre><div class="out">['talabalar.csv', 'user.json']</div></div></div>
+  </div>
+
+  <div class="quiz" data-answer="b"><div class="quiz-label">Mini-test</div><p class="q">python-docx o'rnatildi. Kodda qanday import qilinadi?</p><div class="opts"><button data-k="a">import python_docx</button><button data-k="b">from docx import Document</button><button data-k="c">import word</button></div><p class="fb" data-ok="To'g'ri! Paket nomi python-docx, lekin modul nomi docx." data-no="Paket nomi python-docx bo'lsa ham, import nomi docx: from docx import Document"></p></div>
+</section>
+
+<!-- 10 -->
+<section class="lesson" id="dars-10" data-title="Amaliy loyiha">
+  <div class="eyebrow">10-dars · 15 daqiqa</div>
+  <h2>Amaliy loyiha: baholar hisoboti</h2>
+  <p class="lead">Hamma o'rganganlarimizni birlashtiramiz. Dastur CSV'dan baholarni o'qiydi, o'rtacha bahoni hisoblaydi va natijani TXT, JSON, CSV formatlarida saqlaydi.</p>
+  <div class="flow">
+    <div class="step"><span class="n">CSV</span><b>baholar.csv</b><span>Kirish fayli</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">PY</span><b>hisobot.py</b><span>O'qish, hisoblash, saralash</span></div>
+    <div class="arrow">→</div>
+    <div class="step"><span class="n">×3</span><b>natijalar/</b><span>hisobot.txt, natijalar.json, natijalar.csv</span></div>
+  </div>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">baholar.csv</span><button class="copy">Nusxalash</button></div><pre><code class="language-none">ism,matematika,fizika,ingliz
+Ali,85,78,90
+Malika,92,88,95
+Jasur,60,72,58
+Dilnoza,77,81,84</code></pre></div>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">hisobot.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python">import csv
+import json
+from pathlib import Path
+from datetime import date
+
+KIRISH = Path("baholar.csv")
+CHIQISH = Path("natijalar")
+
+
+def baho_harfi(ortacha):
+    if ortacha &gt;= 86: return "A"
+    if ortacha &gt;= 71: return "B"
+    if ortacha &gt;= 56: return "C"
+    return "F"
+
+
+def oqish(yol):
+    try:
+        with open(yol, newline="", encoding="utf-8") as f:
+            return list(csv.DictReader(f))
+    except FileNotFoundError:
+        print(f"'{yol}' topilmadi!")
+        return []
+
+
+def hisoblash(qatorlar):
+    natijalar = []
+    for q in qatorlar:
+        ism = q.pop("ism")
+        ballar = [int(b) for b in q.values()]
+        ortacha = round(sum(ballar) / len(ballar), 1)
+        natijalar.append({"ism": ism, "ortacha": ortacha, "baho": baho_harfi(ortacha)})
+    natijalar.sort(key=lambda n: n["ortacha"], reverse=True)
+    return natijalar
+
+
+def saqlash(natijalar):
+    CHIQISH.mkdir(exist_ok=True)
+
+    with open(CHIQISH / "hisobot.txt", "w", encoding="utf-8") as f:
+        f.write(f"BAHOLAR HISOBOTI: {date.today()}\n")
+        f.write("=" * 35 + "\n")
+        for i, n in enumerate(natijalar, 1):
+            f.write(f"{i}. {n['ism']:&lt;10} {n['ortacha']:&gt;6}   {n['baho']}\n")
+
+    with open(CHIQISH / "natijalar.json", "w", encoding="utf-8") as f:
+        json.dump(natijalar, f, ensure_ascii=False, indent=2)
+
+    with open(CHIQISH / "natijalar.csv", "w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=["ism", "ortacha", "baho"])
+        writer.writeheader()
+        writer.writerows(natijalar)
+
+
+if __name__ == "__main__":
+    qatorlar = oqish(KIRISH)
+    if qatorlar:
+        saqlash(hisoblash(qatorlar))
+        print((CHIQISH / "hisobot.txt").read_text(encoding="utf-8"))</code></pre><div class="out">BAHOLAR HISOBOTI: 2026-11-22
+===================================
+1. Malika       91.7   A
+2. Ali          84.3   B
+3. Dilnoza      80.7   B
+4. Jasur        63.3   C</div></div>
+  <div class="note tip"><span class="i">★</span><p>Loyihani kengaytiring: hisobotni <code>python-docx</code> bilan Word faylga chiqaring yoki <code>openpyxl</code> bilan Excel'ga yozing.</p></div>
+</section>
+
+<!-- 11 -->
+<section class="lesson" id="dars-11" data-title="Mashqlar va cheat sheet">
+  <div class="eyebrow">11-dars · mustaqil ish</div>
+  <h2>Mashqlar va qisqa eslatma</h2>
+  <p class="lead">Bilimni mustahkamlashning yagona yo'li o'zingiz yozib ko'rish. Osondan qiyinga qarab bajaring.</p>
+  <ol class="check">
+    <li><b>1</b><span>Foydalanuvchidan 5 ta ism so'rab, <code>ismlar.txt</code> ga har birini yangi qatorga yozing.</span><span class="lvl l1">Oson</span></li>
+    <li><b>2</b><span><code>ismlar.txt</code> ni o'qib, ismlarni alifbo tartibida chiqaring.</span><span class="lvl l1">Oson</span></li>
+    <li><b>3</b><span>Matnli faylda eng ko'p takrorlangan 10 ta so'zni toping (<code>collections.Counter</code>).</span><span class="lvl l2">O'rta</span></li>
+    <li><b>4</b><span>Xarajatlar daftari: sana, nom, summani <code>xarajatlar.csv</code> ga qo'shib boring, jami summani chiqaring.</span><span class="lvl l2">O'rta</span></li>
+    <li><b>5</b><span>JSON asosida To-do list: qo'shish, ko'rish, bajarildi deb belgilash, o'chirish.</span><span class="lvl l2">O'rta</span></li>
+    <li><b>6</b><span>Papkadagi barcha <code>.txt</code> fayllarni bitta <code>hammasi.txt</code> ga birlashtiring.</span><span class="lvl l2">O'rta</span></li>
+    <li><b>7</b><span>CSV ma'lumotlaridan avtomatik Word hisobot yarating.</span><span class="lvl l3">Qiyin</span></li>
+    <li><b>8</b><span>Papkadagi barcha PDF'larni bitta faylga birlashtirib, sahifalar sonini chiqaring.</span><span class="lvl l3">Qiyin</span></li>
+  </ol>
+
+  <h3>Cheat sheet</h3>
+  <div class="code"><div class="bar-top"><div class="dots"><i></i><i></i><i></i></div><span class="fname">eslatma.py</span><button class="copy">Nusxalash</button></div><pre><code class="language-python"># TXT
+with open("f.txt", encoding="utf-8") as f: matn = f.read()
+with open("f.txt", "w", encoding="utf-8") as f: f.write("matn\n")   # eskisini o'chiradi!
+with open("f.txt", "a", encoding="utf-8") as f: f.write("yana\n")   # oxiriga qo'shadi
+
+# Binar
+with open("r.jpg", "rb") as f: data = f.read()
+with open("n.jpg", "wb") as f: f.write(data)
+
+# CSV
+import csv
+with open("f.csv", newline="", encoding="utf-8") as f:
+    for q in csv.DictReader(f): print(q["ustun"])
+
+# JSON
+import json
+with open("f.json", encoding="utf-8") as f: d = json.load(f)
+with open("f.json", "w", encoding="utf-8") as f:
+    json.dump(d, f, ensure_ascii=False, indent=2)
+
+# pathlib
+from pathlib import Path
+p = Path("papka") / "f.txt"
+p.exists(); p.read_text(encoding="utf-8"); list(Path(".").glob("*.csv"))</code></pre></div>
+
+  <h3>8 ta oltin qoida</h3>
+  <div class="grid">
+    <div class="card"><h4>1. with ishlating</h4><p>Fayl o'zi yopiladi.</p></div>
+    <div class="card"><h4>2. utf-8</h4><p>Matnli fayllarda doim <code>encoding="utf-8"</code>.</p></div>
+    <div class="card"><h4>3. "w" va "a"</h4><p>"w" o'chiradi, "a" qo'shadi.</p></div>
+    <div class="card"><h4>4. CSV</h4><p><code>newline=""</code> va <code>csv</code> moduli.</p></div>
+    <div class="card"><h4>5. JSON</h4><p><code>ensure_ascii=False</code>, <code>indent</code>.</p></div>
+    <div class="card"><h4>6. Binar</h4><p><code>"rb"</code>/<code>"wb"</code> yoki kutubxona.</p></div>
+    <div class="card"><h4>7. Xatolar</h4><p>Aniq xato turini ushlang.</p></div>
+    <div class="card"><h4>8. Yo'llar</h4><p><code>pathlib</code> bilan ishlang.</p></div>
+  </div>
+</section>
+
+<div class="pager" id="pager">
+  <button id="prevBtn">← Oldingi</button>
+  <button id="doneBtn" class="done-btn">✓ Tushundim</button>
+  <button id="nextBtn" class="next">Keyingi →</button>
+</div>
+</main>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" data-manual></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+<script>
+document.documentElement.classList.add("js");
+const lessons=[...document.querySelectorAll(".lesson")];
+const navList=document.getElementById("navList");
+let cur=0, done=new Set();
+try{done=new Set(JSON.parse(localStorage.getItem("py-fayl-done")||"[]"))}catch(e){}
+function saveDone(){try{localStorage.setItem("py-fayl-done",JSON.stringify([...done]))}catch(e){}}
+
+lessons.forEach((l,i)=>{
+  const li=document.createElement("li");
+  const b=document.createElement("button");
+  b.innerHTML=`<span class="num">${i+1}</span><span>${l.dataset.title}</span>`;
+  b.addEventListener("click",()=>{go(i);document.getElementById("side").classList.remove("open")});
+  li.appendChild(b);navList.appendChild(li);
+});
+const navBtns=[...navList.querySelectorAll("button")];
+
+function render(){
+  lessons.forEach((l,i)=>l.classList.toggle("show",i===cur));
+  navBtns.forEach((b,i)=>{b.classList.toggle("active",i===cur);b.classList.toggle("done",done.has(i));b.querySelector(".num").textContent=done.has(i)?"✓":i+1});
+  document.getElementById("prevBtn").disabled=cur===0;
+  const nb=document.getElementById("nextBtn");
+  nb.disabled=cur===lessons.length-1;
+  const db=document.getElementById("doneBtn");
+  db.textContent=done.has(cur)?"✓ O'qildi":"✓ Tushundim";
+  db.style.opacity=done.has(cur)?.6:1;
+  document.getElementById("progTxt").textContent=`${done.size} / ${lessons.length}`;
+  document.getElementById("progBar").style.width=(done.size/lessons.length*100)+"%";
+}
+function go(i,scroll=true){
+  cur=Math.max(0,Math.min(lessons.length-1,i));
+  render();
+  if(location.hash!=="#dars-"+(cur+1)) history.replaceState(null,"","#dars-"+(cur+1));
+  if(scroll) window.scrollTo({top:0,behavior:"smooth"});
+}
+document.getElementById("prevBtn").onclick=()=>go(cur-1);
+document.getElementById("nextBtn").onclick=()=>{done.add(cur);saveDone();go(cur+1)};
+document.getElementById("doneBtn").onclick=()=>{done.has(cur)?done.delete(cur):done.add(cur);saveDone();render()};
+document.getElementById("menuBtn").onclick=()=>document.getElementById("side").classList.toggle("open");
+function fromHash(){const m=location.hash.match(/^#dars-(\d+)$/);if(m)go(+m[1]-1,false)}
+window.addEventListener("hashchange",fromHash);
+render();fromHash();
+
+// tablar
+document.querySelectorAll(".tabs").forEach(t=>{
+  const btns=[...t.querySelector(".tablist").children];
+  const panels=[...t.querySelectorAll(":scope > .tabpanel")];
+  btns.forEach((b,i)=>b.addEventListener("click",()=>{
+    btns.forEach((x,j)=>x.setAttribute("aria-selected",j===i));
+    panels.forEach((p,j)=>p.classList.toggle("on",j===i));
+  }));
+});
+
+// nusxalash
+document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{
+  const txt=b.closest(".code").querySelector("pre").innerText;
+  const ok=()=>{b.textContent="Nusxalandi ✓";setTimeout(()=>b.textContent="Nusxalash",1500)};
+  try{navigator.clipboard.writeText(txt).then(ok,()=>{b.textContent="Qo'lda belgilang"})}catch(e){b.textContent="Qo'lda belgilang"}
+}));
+
+// testlar
+document.querySelectorAll(".quiz").forEach(q=>{
+  const fb=q.querySelector(".fb");
+  const btns=[...q.querySelectorAll(".opts button")];
+  btns.forEach(b=>b.addEventListener("click",()=>{
+    const right=b.dataset.k===q.dataset.answer;
+    btns.forEach(x=>{x.disabled=true;if(x.dataset.k===q.dataset.answer)x.classList.add("right")});
+    if(!right)b.classList.add("wrong");
+    fb.textContent=right?"✓ "+fb.dataset.ok:"✗ "+fb.dataset.no;
+    fb.style.color=right?"var(--ok)":"var(--bad)";
+  }));
+});
+
+// rejimlar laboratoriyasi
+const OLD="olma\nnok";
+const modes={
+ r:{1:["ok","OK","Fayl o'qish uchun ochildi. Ichidagi ma'lumot o'zgarmaydi.",OLD,OLD,""],0:["bad","FileNotFoundError","O'qish uchun fayl mavjud bo'lishi shart.",null,null,""]},
+ w:{1:["bad","DIQQAT","Fayl ochilishi bilan ichi butunlay tozalanadi, keyin yangi matn yoziladi.",OLD,"yangi matn","w"],0:["ok","OK","Yangi bo'sh fayl yaratildi va matn yozildi.",null,"yangi matn","new"]},
+ a:{1:["ok","OK","Eski ma'lumot saqlanib, yangi matn oxiriga qo'shildi.",OLD,OLD+"\nyangi matn","a"],0:["ok","OK","Fayl yo'q edi, yangisi yaratildi va matn yozildi.",null,"yangi matn","new"]},
+ x:{1:["bad","FileExistsError","\"x\" faqat yangi fayl yaratadi. Fayl bor bo'lsa, uni buzmaslik uchun xato beradi.",OLD,OLD,""],0:["ok","OK","Yangi fayl xavfsiz yaratildi.",null,"yangi matn","new"]},
+ "r+":{1:["ok","OK","O'qish ham, yozish ham mumkin. Fayl tozalanmaydi, yozuv kursor turgan joyga tushadi.",OLD,"yangi matn",""],0:["bad","FileNotFoundError","\"r+\" uchun fayl mavjud bo'lishi shart.",null,null,""]}
+};
+let mode="r",exist="1";
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function renderMode(){
+  const [k,badge,txt,before,after,kind]=modes[mode][exist];
+  let files=`<div class="file"><div>Oldin: data.txt</div><pre>${before===null?"<em>fayl yo'q</em>":esc(before)}</pre></div>`;
+  let afterHtml;
+  if(after===null) afterHtml="<em>o'zgarmadi</em>";
+  else if(kind==="w") afterHtml=`<span class="gone">${esc(before)}</span>\n<span class="new">${esc(after)}</span>`;
+  else if(kind==="a") afterHtml=`${esc(before)}\n<span class="new">yangi matn</span>`;
+  else if(kind==="new") afterHtml=`<span class="new">${esc(after)}</span>`;
+  else afterHtml=esc(after);
+  files+=`<div class="file"><div>Keyin</div><pre>${afterHtml}</pre></div>`;
+  document.getElementById("modeResult").innerHTML=`<span class="badge ${k}">${badge}</span><div><code>open("data.txt", "${mode}")</code><p style="margin:6px 0 0">${txt}</p><div class="files">${files}</div></div>`;
+}
+function seg(id,attr,cb){const el=document.getElementById(id);el.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{el.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));cb(b.dataset[attr]);renderMode()}))}
+seg("modeSeg","m",v=>mode=v);seg("existSeg","e",v=>exist=v);renderMode();
+
+// kursor laboratoriyasi
+const TXT="olma\nnok\nuzum\n";let pos=0,lastA=0,lastB=0;
+function renderCur(){
+  let h="";
+  for(let i=0;i<TXT.length;i++){
+    const ch=TXT[i];const cls=[];
+    if(i>=lastA&&i<lastB)cls.push("rd");
+    if(i===pos)cls.push("cur");
+    h+=`<span class="${cls.join(" ")}">${ch==="\n"?'<span class="nl">\\n</span><br>':esc(ch)}</span>`;
+  }
+  if(pos>=TXT.length)h+='<span class="end"></span>';
+  document.getElementById("curText").innerHTML=h;
+  document.getElementById("curPos").textContent=pos;
+}
+document.querySelectorAll("#curBtns button").forEach(b=>b.addEventListener("click",()=>{
+  const a=b.dataset.a;let ret="";lastA=pos;
+  if(a==="read4"){ret=TXT.slice(pos,pos+4);pos=Math.min(TXT.length,pos+4)}
+  else if(a==="readline"){const j=TXT.indexOf("\n",pos);const e=j<0?TXT.length:j+1;ret=TXT.slice(pos,e);pos=e}
+  else if(a==="read"){ret=TXT.slice(pos);pos=TXT.length}
+  else {pos=0;lastA=0;lastB=0;document.getElementById("curRet").textContent="0";renderCur();return}
+  lastB=pos;
+  document.getElementById("curRet").textContent="'"+ret.replace(/\n/g,"\\n")+"'";
+  renderCur();
+}));
+renderCur();
+
+// sintaksis
+if(window.Prism){Prism.highlightAll()}
+</script>
+</body>
+</html>
